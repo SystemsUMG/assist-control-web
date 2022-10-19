@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('regions', function (Blueprint $table) {
-            $table->foreign('country_id')->references('id')->on('countries');
+        Schema::create('courses', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name')->nullable(false);
+            $table->string('description')->nullable(false);
+            $table->foreignId('career_id')->constrained('careers');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('regions', function (Blueprint $table) {
-            $table->dropForeign(['country_id']);
-        });
+        Schema::dropIfExists('courses');
     }
 };

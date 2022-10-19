@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('attendance_data', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->integer('age')->nullable();
-            $table->string('password');
-            $table->string('address');
-            $table->unsignedBigInteger('region_id');
-            $table->unsignedBigInteger('rol_id');
-            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('teacher_course_assigned_id')->nullable(false);
+            $table->integer('total_assists')->nullable(false);
+            $table->foreign('teacher_course_assigned_id')->references('id')->on('teacher_course_assigneds');
             $table->timestamps();
         });
     }
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('attendance_data');
     }
 };

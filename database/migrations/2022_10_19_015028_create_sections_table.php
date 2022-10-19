@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreign('region_id')->references('id')->on('regions');
-            $table->foreign('rol_id')->references('id')->on('rols');
-            $table->foreign('department_id')->references('id')->on('departments');
+        Schema::create('sections', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('letter')->nullable(false);
+            $table->timestamps();
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('sections');
     }
 };

@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('countries', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+        Schema::create('schedules', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->time('begin_hour')->nullable(false);
+            $table->time('end_hour')->nullable(false);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('countries');
+        Schema::dropIfExists('schedules');
     }
 };

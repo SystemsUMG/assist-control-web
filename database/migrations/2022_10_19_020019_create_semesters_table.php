@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('departments', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('description');
+        Schema::create('semesters', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('number')->nullable(false);
+            $table->integer('year')->nullable(false);
+            $table->date('begin_date')->nullable(false);
+            $table->date('end_date')->nullable(false);
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_departaments');
+        Schema::dropIfExists('semesters');
     }
 };
