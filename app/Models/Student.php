@@ -9,7 +9,20 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['*'];
+    protected $fillable = [
+        'name',
+        'last_name',
+        'email',
+        'password',
+        'begin_date',
+        'end_date',
+        'age',
+        'dpi',
+        'carnet',
+        'career_assigned_id',
+    ];
+
+    protected $hidden = ['created_at', 'updated_at', 'password'];
 
     public function careers_assigned()
     {

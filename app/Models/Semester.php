@@ -9,7 +9,14 @@ class Semester extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['*'];
+    protected $fillable = [
+        'number',
+        'year',
+        'begin_date',
+        'end_date'
+    ];
+
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function teacher_courses_assigned()
     {

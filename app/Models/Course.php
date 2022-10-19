@@ -9,6 +9,14 @@ class Course extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'career_id',
+    ];
+
+    protected $hidden = ['created_at', 'updated_at'];
+
     public function career()
     {
         $this->hasOne(Career::class, 'id', 'career_id');
