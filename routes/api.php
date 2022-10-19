@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CenterController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\UsersController;
@@ -28,9 +29,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('login', [AuthController::class, 'login']);
 
 Route::name('api.')
-    ->middleware('auth:sanctum')
+    //->middleware('auth:sanctum')
     ->group(function () {
         Route::apiResource('users', UsersController::class);
+        Route::apiResource('centers', CenterController::class);
         // Route::get('graphics/users', [GraphicController::class, 'graphic']);
         Route::post('logout', [AuthController::class, 'logout']);
     });

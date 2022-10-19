@@ -9,7 +9,10 @@ class Center extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['*'];
+    protected $fillable = [
+        'name',
+        'address'
+    ];
 
     public function careers_assignments()
     {
