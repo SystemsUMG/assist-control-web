@@ -13,6 +13,7 @@ class Center extends Model
         'name',
         'address'
     ];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function careers_assignments()
     {

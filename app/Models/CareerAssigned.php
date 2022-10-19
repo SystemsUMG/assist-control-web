@@ -9,7 +9,12 @@ class CareerAssigned extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['*'];
+    protected $fillable = [
+        'center_id',
+        'career_id',
+    ];
+
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function centers()
     {
