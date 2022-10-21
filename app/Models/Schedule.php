@@ -9,7 +9,12 @@ class Schedule extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['*'];
+    protected $fillable = [
+        'begin_hour',
+        'end_hour',
+    ];
+
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function teacher_courses_assigned()
     {

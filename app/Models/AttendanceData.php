@@ -9,7 +9,12 @@ class AttendanceData extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['*'];
+    protected $fillable = [
+        'teacher_course_assigned_id',
+        'total_assists',
+    ];
+
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function students_attendance()
     {

@@ -9,7 +9,12 @@ class Career extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['*'];
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function courses()
     {

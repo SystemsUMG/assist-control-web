@@ -9,7 +9,12 @@ class StudentCourseAssigned extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['*'];
+    protected $fillable = [
+        'student_id',
+        'teacher_course_assigned_id',
+    ];
+
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function student()
     {
