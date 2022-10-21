@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\SectionController;
 use App\Http\Controllers\GraphicController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::name('api.')
     ->group(function () {
         Route::apiResource('users', UsersController::class);
         Route::apiResource('centers', CenterController::class);
+        Route::apiResource('sections', SectionController::class);
         // Route::get('graphics/users', [GraphicController::class, 'graphic']);
         Route::post('logout', [AuthController::class, 'logout']);
     });
