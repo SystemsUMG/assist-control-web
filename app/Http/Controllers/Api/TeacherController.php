@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Response\ResponseController;
-use App\Models\Student;
+use App\Models\Teacher;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
-class StudentController extends ResponseController
+class TeacherController extends ResponseController
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +20,9 @@ class StudentController extends ResponseController
     public function index()
     {
         try {
-            $this->records = Student::with('career_assigned')->get();
+            $this->records = Teacher::with('teacher_courses_assigned')->get();
             $this->result = true;
-            $this->message = 'Estudiantes consultados correctamente';
+            $this->message = 'Profesores consultados correctamente';
             $this->statusCode = 200;
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
         } catch (Exception $exception) {
@@ -39,23 +39,20 @@ class StudentController extends ResponseController
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'name'              => ['required', 'string'],
-            'last_name'         => ['required', 'string'],
-            'email'             => ['required', 'email', 'unique:students,email'],
-            'begin_date'        => ['required', 'string'],
-            'end_date'          => ['string', 'nullable'],
-            'age'               => ['required', 'integer'],
-            'dpi'               => ['required', 'numeric'],
-            'carnet'            => ['required', 'string'],
-            'career_assigned_id' => ['required', 'integer', 'exists:career_assigneds,id'],
+            'name'      => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'active'    => ['required', 'string'],
+            'email'     => ['required', 'email', 'unique:teachers,email'],
+            'address'   => ['string', 'required'],
+            'phone'     => ['required', 'integer'],
         ]);
         try {
             if ($request->password) {
                 $validate['password'] = Hash::make($request->password);
-                $student = Student::create($validate);
-                if ($student) {
+                $teacher = Teacher::create($validate);
+                if ($teacher) {
                     $this->result = true;
-                    $this->message = 'Estudiante registrado correctamente';
+                    $this->message = 'Profesor registrado correctamente';
                 }
             } else {
                 $this->message = 'La contraseña es obligatoria';
@@ -76,13 +73,13 @@ class StudentController extends ResponseController
     public function show($id)
     {
         try {
-            $student = Student::find($id);
-            if ($student) {
-                $this->records = $student;
+            $teacher = Teacher::with('teacher_courses_assigned')->find($id);
+            if ($teacher) {
+                $this->records = $teacher;
                 $this->result = true;
-                $this->message = 'Estudiante consultado correctamente';
+                $this->message = 'Profesor consultado correctamente';
             } else {
-                $this->message = 'No existe el estudiante';
+                $this->message = 'No existe el profesor';
             }
             $this->statusCode = 200;
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
@@ -100,27 +97,24 @@ class StudentController extends ResponseController
      */
     public function update(Request $request, $id)
     {
-        $student = Student::find($id);
-        if ($student) {
+        $teacher = Teacher::find($id);
+        if ($teacher) {
             $validate = $request->validate([
-                'name'              => ['required', 'string'],
-                'last_name'         => ['required', 'string'],
-                'email'             => ['required', 'email', Rule::unique('students', 'email')->ignore($student), 'email'],
-                'begin_date'        => ['required', 'string'],
-                'end_date'          => ['string', 'nullable'],
-                'age'               => ['required', 'integer'],
-                'dpi'               => ['required', 'numeric'],
-                'carnet'            => ['required', 'string'],
-                'career_assigned_id' => ['required', 'integer', 'exists:career_assigneds,id'],
+                'name'      => ['required', 'string'],
+                'last_name' => ['required', 'string'],
+                'active'    => ['required', 'boolean'],
+                'email'     => ['required', 'email', Rule::unique('teachers', 'email')->ignore($teacher), 'email'],
+                'address'   => ['string', 'required'],
+                'phone'     => ['required', 'integer'],
             ]);
             if ($request->password) {
                 $validate['password'] = Hash::make($request->password);
             }
-            $student->update($validate);
+            $teacher->update($validate);
             $this->result = true;
-            $this->message = 'Estudiante actualizado correctamente';
+            $this->message = 'Profesor actualizado correctamente';
         } else {
-        $this->message = 'No existe el estudiante';
+            $this->message = 'No existe el profesor';
         }
         $this->statusCode = 200;
         return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
@@ -129,19 +123,19 @@ class StudentController extends ResponseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
         try {
-            $student = Student::find($id);
-            if ($student) {
-                $student->delete();
+            $teacher = Teacher::find($id);
+            if ($teacher) {
+                $teacher->delete();
                 $this->result = true;
-                $this->message = 'Estudiante eliminado correctamente';
+                $this->message = 'Profesor eliminado correctamente';
             } else {
-                $this->message = 'No existe el estudiante';
+                $this->message = 'No existe el profesor';
             }
             $this->statusCode = 200;
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
