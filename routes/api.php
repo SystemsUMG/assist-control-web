@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\TeacherController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\SectionController;
 use App\Http\Controllers\GraphicController;
 use Illuminate\Http\Request;
@@ -44,6 +45,7 @@ Route::name('api.')
         Route::apiResource('assigned-careers', AssignedCareerController::class);
         Route::apiResource('students', StudentController::class);
         Route::apiResource('courses', CourseController::class);
+        Route::apiResource('schedules', ScheduleController::class);
         Route::apiResource('teachers', TeacherController::class);
         Route::apiResource('semesters', SemesterController::class);
         Route::apiResource('sections', SectionController::class);
