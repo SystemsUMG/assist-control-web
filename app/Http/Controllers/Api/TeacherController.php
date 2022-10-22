@@ -104,7 +104,7 @@ class TeacherController extends ResponseController
                 'last_name' => ['required', 'string'],
                 'active'    => ['required', 'boolean'],
                 'email'     => ['required', 'email', Rule::unique('teachers', 'email')->ignore($teacher), 'email'],
-                'address'   => ['string', 'required'],
+                'address'   => ['required', 'string'],
                 'phone'     => ['required', 'integer'],
             ]);
             if ($request->password) {
@@ -139,8 +139,9 @@ class TeacherController extends ResponseController
             }
             $this->statusCode = 200;
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
-        } catch (Exception $exception) {
-            return $this->jsonResponse($this->records, $this->result, $this->message = $exception->getMessage(), $this->statusCode);
+        } catch (Exception) {
+            $this->message = 'Error: otros datos dependen de este registro';
+            return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
         }
     }
 }
