@@ -14,19 +14,22 @@ class CenterController extends ResponseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $centers = Center::all();
-        return $this->jsonResponse($centers, true, 'Registros consultados exitosamente', 200);
+        $this->records = Center::all();
+        $this->result = true;
+        $this->message = 'Centros consultados exitosamente';
+        $this->statusCode = 200;
+        return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -47,7 +50,7 @@ class CenterController extends ResponseController
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -98,7 +101,6 @@ class CenterController extends ResponseController
     {
         try {
             $center = Center::find($id);
-
             if($center){
                 $center->delete();
                 $this->result = true;
@@ -108,7 +110,7 @@ class CenterController extends ResponseController
             }
             $this->statusCode = 200;
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $this->message = 'Error: otros datos dependen de este registro';
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
         }

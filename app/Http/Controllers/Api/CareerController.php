@@ -125,8 +125,9 @@ class CareerController extends ResponseController
             }
             $this->statusCode = 200;
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
-        } catch (Exception $exception) {
-            return $this->jsonResponse($this->records, $this->result, $this->message = $exception->getMessage(), $this->statusCode);
+        } catch (Exception) {
+            $this->message = 'Error: otros datos dependen de este registro';
+            return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
         }
     }
 }
