@@ -35,6 +35,14 @@
         	  	</router-link>
         	</li>
         	<li class="nav-item">
+        	  	<router-link class="nav-link " :to="{ name: 'Careers' }">
+					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+        	  	  	  	<i class="ni ni-building text-primary text-sm opacity-10"></i>
+					</div>
+					<span class="nav-link-text ms-1">Carreras</span>
+        	  	</router-link>
+        	</li>
+        	<li class="nav-item">
         	  	<router-link class="nav-link " :to="{ name: 'Countries' }">
         	  	  	<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
         	  	    	<i class="ni ni-world text-info text-sm opacity-10"></i>
