@@ -10,11 +10,11 @@
                     </div>
                     <div class="modal-body pt-0 px-4">
                         <hr class="horizontal dark"/>
-                        <p class="text-uppercase text-sm">Información de la Carrera</p>
+                        <p class="text-uppercase text-sm">Información del Curso</p>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="name" class="form-control-label">Nombre de la Carrera</label>
+                                    <label for="name" class="form-control-label">Nombre del Curso</label>
                                     <input id="name" class="form-control" type="text" v-model="data.name" :class="errors.name ? 'is-invalid' : ''">
                                     <small class="invalid-feedback">{{ errors.name ? errors.name[0] : '' }}</small>
                                 </div>
@@ -24,6 +24,16 @@
                                     <label for="description" class="form-control-label">Descripción</label>
                                     <input id="description" class="form-control" type="text" v-model="data.description" :class="errors.description ? 'is-invalid' : ''">
                                     <small class="invalid-feedback">{{ errors.description ? errors.description[0] : '' }}</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="career_id" class="form-control-label">Carrera</label>
+                                    <select  id="career_id" class="form-select" v-model="data.career_id" :class="errors.career_id ? 'is-invalid' : ''">
+                                        <option value="" disabled hidden>Seleccione una opción</option>
+                                        <option v-for="career in careers" :value="career.id" :key="career.id">{{ career.name }}</option>
+                                    </select>
+                                    <small class="invalid-feedback">{{ errors.career_id ? errors.career_id[0] : '' }}</small>
                                 </div>
                             </div>
                         </div>
@@ -63,14 +73,16 @@ export default {
             load: false,
             count: 0,
             url: '',
+            careers: [],
             errors: {},
         }
     },
     computed: {
         OPEN: function() {
             let _this = this
+            _this.loadData('careers')
             if(_this.method == 'PUT') {
-                axios({url: '/careers/' + _this.id, method: 'GET' })
+                axios({url: '/courses/' + _this.id, method: 'GET' })
                     .then((resp) => {
                         if (resp.data.result) {
                             _this.data = resp.data.records
@@ -117,6 +129,32 @@ export default {
                 this.loader.hide()
             }
         },
+        loadData(url = '') {
+            let _this = this
+            axios({url: url , method: 'GET'})
+			.then((resp) => {
+			    if(resp.data.records.length > 0) {
+                    let records = resp.data.records
+                    switch(url) {
+                    case 'careers':
+                        _this.careers = records
+                        break;
+                    default:
+                        _this.careers = records
+                    } 
+					_this.icon = 'success'
+					_this.message = resp.data.message
+				} else {
+					_this.icon = 'error'
+					_this.message = 'No existen ' + url + ' registrados'
+                    _this.CLOSE()
+				}
+				_this.showToast(_this.icon, _this.message)
+			}).catch((err) => {
+				_this.showToast(_this.icon)
+                _this.CLOSE()
+			})
+        },
         CLOSE: function(){
             this.$emit('close')
         },
@@ -139,7 +177,7 @@ export default {
                 }
                 this.errors = []
                 setTimeout(function() {
-                    axios({url: '/careers' + method, method: 'POST', data: form })
+                    axios({url: '/courses' + method, method: 'POST', data: form })
                         .then((resp) => {
                             if(resp.data.result) {
                                 _this.icon = 'success'

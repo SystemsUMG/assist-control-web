@@ -169,6 +169,7 @@ return [
         'department_id' => 'departamento',
         'country_id' => 'pais',
         'description' => 'descripción',
+        'letter' => 'nombre',
     ],
 
 ];

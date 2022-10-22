@@ -10,20 +10,13 @@
                     </div>
                     <div class="modal-body pt-0 px-4">
                         <hr class="horizontal dark"/>
-                        <p class="text-uppercase text-sm">Información de la Carrera</p>
+                        <p class="text-uppercase text-sm">Información de la Sección</p>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="name" class="form-control-label">Nombre de la Carrera</label>
-                                    <input id="name" class="form-control" type="text" v-model="data.name" :class="errors.name ? 'is-invalid' : ''">
-                                    <small class="invalid-feedback">{{ errors.name ? errors.name[0] : '' }}</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="description" class="form-control-label">Descripción</label>
-                                    <input id="description" class="form-control" type="text" v-model="data.description" :class="errors.description ? 'is-invalid' : ''">
-                                    <small class="invalid-feedback">{{ errors.description ? errors.description[0] : '' }}</small>
+                                    <label for="letter" class="form-control-label">Nombre de la Sección</label>
+                                    <input id="letter" class="form-control" type="text" v-model="data.letter" :class="errors.letter ? 'is-invalid' : ''">
+                                    <small class="invalid-feedback">{{ errors.letter ? errors.letter[0] : '' }}</small>
                                 </div>
                             </div>
                         </div>
@@ -57,8 +50,7 @@ export default {
             message: '',
             loader: {},
             data: {
-                name: '',
-                description: '',
+                letter: '',
             },
             load: false,
             count: 0,
@@ -70,7 +62,7 @@ export default {
         OPEN: function() {
             let _this = this
             if(_this.method == 'PUT') {
-                axios({url: '/careers/' + _this.id, method: 'GET' })
+                axios({url: '/sections/' + _this.id, method: 'GET' })
                     .then((resp) => {
                         if (resp.data.result) {
                             _this.data = resp.data.records
@@ -139,7 +131,7 @@ export default {
                 }
                 this.errors = []
                 setTimeout(function() {
-                    axios({url: '/careers' + method, method: 'POST', data: form })
+                    axios({url: '/sections' + method, method: 'POST', data: form })
                         .then((resp) => {
                             if(resp.data.result) {
                                 _this.icon = 'success'
