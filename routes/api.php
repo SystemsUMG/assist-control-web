@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TeacherController;
+use App\Http\Controllers\Api\TeacherCourseAssignedController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\CountryController;
@@ -40,7 +41,6 @@ Route::post('login', [AuthController::class, 'login']);
 Route::name('api.')
     ->middleware('auth:sanctum')
     ->group(function () {
-        Route::apiResource('users', UsersController::class);
         Route::apiResource('centers', CenterController::class);
         Route::apiResource('careers', CareerController::class);
         Route::apiResource('assigned-careers', AssignedCareerController::class);
@@ -51,5 +51,6 @@ Route::name('api.')
         Route::apiResource('semesters', SemesterController::class);
         Route::apiResource('sections', SectionController::class);
         Route::get('graphics', [DashboardController::class, 'index']);
+        Route::apiResource('teacher-courses', TeacherCourseAssignedController::class);
         Route::post('logout', [AuthController::class, 'logout']);
     });
