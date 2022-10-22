@@ -59,6 +59,14 @@
 				</router-link>
         	</li>
         	<li class="nav-item">
+				<router-link class="nav-link " :to="{ name: 'Semesters' }">
+					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+						<i class="ni ni-app text-dark text-sm opacity-10"></i>
+					</div>
+					<span class="nav-link-text ms-1">Semestres</span>
+				</router-link>
+        	</li>
+        	<li class="nav-item">
         	  	<router-link class="nav-link " :to="{ name: 'Countries' }">
 					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
 						<i class="ni ni-world text-info text-sm opacity-10"></i>
