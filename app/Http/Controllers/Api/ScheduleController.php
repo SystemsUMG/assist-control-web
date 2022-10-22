@@ -17,7 +17,13 @@ class ScheduleController extends ResponseController
      */
     public function index()
     {
-        $this->records = Schedule::all();
+        $schedules = Schedule::all();
+        foreach ($schedules as $schedule) {
+            //Formato a horas
+            $schedule->begin_hour = $this->formatTime($schedule->begin_hour);
+            $schedule->end_hour   = $this->formatTime($schedule->end_hour);
+        }
+        $this->records = $schedules;
         $this->result = true;
         $this->message = 'Horarios consultados exitosamente';
         $this->statusCode = 200;
@@ -54,6 +60,9 @@ class ScheduleController extends ResponseController
     public function show($id)
     {
         $schedule = Schedule::find($id);
+        //Formato a horas
+        $schedule->begin_hour = $this->formatTime($schedule->begin_hour);
+        $schedule->end_hour   = $this->formatTime($schedule->end_hour);
         $this->statusCode = 200;
         if($schedule){
             $this->records = $schedule;
@@ -113,5 +122,15 @@ class ScheduleController extends ResponseController
             $this->message = 'Error: otros datos dependen de este registro';
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
         }
+    }
+
+    /**
+     * Format time hour.
+     *
+     * @return String
+     */
+    public function formatTime(String $time)
+    {
+        return substr($time, 0, 5);
     }
 }
