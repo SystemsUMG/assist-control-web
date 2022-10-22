@@ -7,6 +7,7 @@ import Countries from "./pages/countries/Index.vue";
 import Departments from "./pages/departments/Index.vue";
 import Regions from "./pages/regions/Index.vue";
 import Roles from "./pages/roles/Index.vue";
+import Centers from "./pages/centers/Index.vue";
 import NotFound from "./pages/NotFound.vue";
 
 const routes = [
@@ -49,6 +50,11 @@ const routes = [
         path: "/roles",
         name: "Roles",
         component: Roles
+    },
+    {
+        path: "/centers",
+        name: "Centers",
+        component: Centers
     },
     {
         path: "/:catchAll(.*)",
