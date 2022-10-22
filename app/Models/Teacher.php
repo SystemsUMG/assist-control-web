@@ -23,6 +23,6 @@ class Teacher extends Model
 
     public function teacher_courses_assigned()
     {
-        $this->hasMany(TeacherCourseAssigned::class, 'teacher_id', 'id');
+        return $this->hasMany(TeacherCourseAssigned::class, 'teacher_id', 'id');
     }
 }

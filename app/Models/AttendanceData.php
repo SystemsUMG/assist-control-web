@@ -18,12 +18,12 @@ class AttendanceData extends Model
 
     public function students_attendance()
     {
-        $this->hasMany(StudentAttendanceData::class, 'attendance_data_id', 'id');
+        return $this->hasMany(StudentAttendanceData::class, 'attendance_data_id', 'id');
     }
 
     public function teacher_course_assigned()
     {
-        $this->hasOne(TeacherCourseAssigned::class, 'id', 'teacher_course_assigned_id');
+        return $this->hasOne(TeacherCourseAssigned::class, 'id', 'teacher_course_assigned_id');
     }
 
 }

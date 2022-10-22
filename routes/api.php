@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\AssignedCareerController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CareerController;
 use App\Http\Controllers\Api\CenterController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\RolController;
+use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\CountryController;
@@ -34,6 +37,9 @@ Route::name('api.')
     ->group(function () {
         Route::apiResource('users', UsersController::class);
         Route::apiResource('centers', CenterController::class);
+        Route::apiResource('careers', CareerController::class);
+        Route::apiResource('assigned-careers', AssignedCareerController::class);
+        Route::apiResource('students', StudentController::class);
         Route::apiResource('sections', SectionController::class);
         // Route::get('graphics/users', [GraphicController::class, 'graphic']);
         Route::post('logout', [AuthController::class, 'logout']);

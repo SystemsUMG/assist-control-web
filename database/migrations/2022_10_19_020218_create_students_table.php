@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->nullable(false)->unique();
             $table->string('password')->nullable(false);
             $table->date('begin_date')->nullable(false);
-            $table->date('end_date')->nullable(false);
+            $table->date('end_date')->nullable();
             $table->integer('age')->nullable(false);
             $table->string('dpi')->nullable(false);
             $table->string('carnet')->nullable(false);

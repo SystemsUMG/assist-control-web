@@ -18,16 +18,16 @@ class StudentCourseAssigned extends Model
 
     public function student()
     {
-        $this->hasOne(Student::class, 'id', 'student_id');
+        return $this->hasOne(Student::class, 'id', 'student_id');
     }
 
     public function teacher_courses_assigned()
     {
-        $this->hasOne(TeacherCourseAssigned::class, 'id', 'teacher_course_assigned_id');
+        return $this->hasOne(TeacherCourseAssigned::class, 'id', 'teacher_course_assigned_id');
     }
 
     public function attendances()
     {
-        $this->hasMany(StudentAttendanceData::class, 'student_course_assigned_id', 'id');
+        return $this->hasMany(StudentAttendanceData::class, 'student_course_assigned_id', 'id');
     }
 }

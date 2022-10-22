@@ -24,13 +24,13 @@ class Student extends Model
 
     protected $hidden = ['created_at', 'updated_at', 'password'];
 
-    public function careers_assigned()
+    public function career_assigned()
     {
-        $this->hasOne(CareerAssigned::class, 'id', 'career_assigned_id');
+        return $this->hasOne(CareerAssigned::class, 'id', 'career_assigned_id');
     }
 
     public function student_courses_assigned()
     {
-        $this->hasMany(StudentCourseAssigned::class, 'student_id', 'id');
+        return $this->hasMany(StudentCourseAssigned::class, 'student_id', 'id');
     }
 }

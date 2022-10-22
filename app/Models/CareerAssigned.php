@@ -16,18 +16,18 @@ class CareerAssigned extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function centers()
+    public function center()
     {
-        $this->hasOne(Center::class, 'id', 'center_id');
+        return $this->hasOne(Center::class, 'id', 'center_id');
     }
 
-    public function careers()
+    public function career()
     {
-        $this->hasOne(Career::class, 'id', 'career_id');
+        return $this->hasOne(Career::class, 'id', 'career_id');
     }
 
     public function teacher_courses_assigned()
     {
-        $this->hasMany(TeacherCourseAssigned::class, 'career_assigned_id', 'id');
+        return $this->hasMany(TeacherCourseAssigned::class, 'career_assigned_id', 'id');
     }
 }

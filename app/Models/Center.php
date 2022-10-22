@@ -17,6 +17,6 @@ class Center extends Model
 
     public function careers_assignments()
     {
-        $this->hasMany(CareerAssigned::class, 'center_id', 'id');
+        return $this->hasMany(CareerAssigned::class, 'center_id', 'id');
     }
 }

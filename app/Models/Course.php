@@ -19,11 +19,11 @@ class Course extends Model
 
     public function career()
     {
-        $this->hasOne(Career::class, 'id', 'career_id');
+        return $this->hasOne(Career::class, 'id', 'career_id');
     }
 
     public function teacher_courses_assigned()
     {
-        $this->hasMany(TeacherCourseAssigned::class, 'course_id', 'id');
+        return $this->hasMany(TeacherCourseAssigned::class, 'course_id', 'id');
     }
 }

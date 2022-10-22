@@ -10,6 +10,7 @@ class Career extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'name',
         'description',
     ];
@@ -18,11 +19,11 @@ class Career extends Model
 
     public function courses()
     {
-        $this->hasMany(Course::class, 'career_id', 'id');
+        return $this->hasMany(Course::class, 'career_id', 'id');
     }
 
     public function centers_assigned()
     {
-        $this->hasMany(CareerAssigned::class, 'career_id', 'id');
+        return $this->hasMany(CareerAssigned::class, 'career_id', 'id');
     }
 }

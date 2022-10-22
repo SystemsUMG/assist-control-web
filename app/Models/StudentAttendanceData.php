@@ -19,11 +19,11 @@ class StudentAttendanceData extends Model
 
     public function student_course_assigned()
     {
-        $this->hasOne(StudentCourseAssigned::class, 'id', 'student_course_assigned_id');
+        return $this->hasOne(StudentCourseAssigned::class, 'id', 'student_course_assigned_id');
     }
 
     public function attendance_data()
     {
-        $this->hasOne(AttendanceData::class, 'attendance_data_id', 'id');
+        return $this->hasOne(AttendanceData::class, 'attendance_data_id', 'id');
     }
 }
