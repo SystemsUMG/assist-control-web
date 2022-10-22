@@ -85,10 +85,13 @@ export default {
                     }, 1000)
                 }).catch((err) => {
                     setTimeout(() => {
+                        if(err.response.status === 400){
+                            _this.message = err.response.data.message
+                        }
                         _this.count = 0
                         _this.load = false
                         _this.icon = 'error'
-                        _this.showToast(_this.icon)
+                        _this.showToast(_this.icon, _this.message)
                         _this.CLOSE()
                     }, 750)
                 })
