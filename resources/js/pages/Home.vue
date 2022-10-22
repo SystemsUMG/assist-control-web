@@ -190,7 +190,7 @@ export default {
 
 			setTimeout(
 				function() {
-					axios({url: 'graphics/users' , method: 'GET'})
+					axios({url: 'graphics' , method: 'GET'})
 					.then((resp) => {
 						if(resp.data.records.countries.length > 0) {
 							_this.labels = resp.data.records.countries
