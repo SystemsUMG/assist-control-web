@@ -11,6 +11,7 @@ import Centers from "./pages/centers/Index.vue";
 import Careers from "./pages/careers/Index.vue";
 import Courses from "./pages/courses/Index.vue";
 import Sections from "./pages/sections/Index.vue";
+import Schedules from "./pages/schedules/Index.vue";
 import NotFound from "./pages/NotFound.vue";
 
 const routes = [
@@ -73,6 +74,11 @@ const routes = [
         path: "/secciones",
         name: "Sections",
         component: Sections
+    },
+    {
+        path: "/horarios",
+        name: "Schedules",
+        component: Schedules
     },
     {
         path: "/:catchAll(.*)",

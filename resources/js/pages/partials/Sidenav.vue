@@ -10,80 +10,88 @@
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse w-auto " id="sidenav-collapse-main" style="height: inherit">
       	<ul class="navbar-nav">
-        	<li class="nav-item">
-        	  	<router-link class="nav-link" :to="{ name: 'Home' }">
+			<li class="nav-item">
+				<router-link class="nav-link" :to="{ name: 'Home' }">
         	    	<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-        	    	  	<i class="ni ni-chart-bar-32 text-primary text-sm opacity-10"></i>
+						<i class="ni ni-chart-bar-32 text-primary text-sm opacity-10"></i>
         	    	</div>
         	    	<span class="nav-link-text ms-1">Dashboard</span>
         	  	</router-link>
         	</li>
         	<li class="nav-item">
-        	  	<router-link class="nav-link " :to="{ name: 'Users' }">
-        	  	  	<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-        	  	  	  	<i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
-        	  	  	</div>
-        	  	  	<span class="nav-link-text ms-1">Usuarios</span>
-        	  	</router-link>
-        	</li>
-        	<li class="nav-item">
-        	  	<router-link class="nav-link " :to="{ name: 'Centers' }">
+				<router-link class="nav-link " :to="{ name: 'Centers' }">
 					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-        	  	  	  	<i class="ni ni-square-pin text-warning text-sm opacity-10"></i>
+						<i class="ni ni-square-pin text-secondary text-sm opacity-10"></i>
 					</div>
 					<span class="nav-link-text ms-1">Centros</span>
-        	  	</router-link>
+				</router-link>
         	</li>
         	<li class="nav-item">
-        	  	<router-link class="nav-link " :to="{ name: 'Careers' }">
+				<router-link class="nav-link " :to="{ name: 'Careers' }">
 					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-        	  	  	  	<i class="ni ni-building text-primary text-sm opacity-10"></i>
+						<i class="ni ni-building text-success text-sm opacity-10"></i>
 					</div>
 					<span class="nav-link-text ms-1">Carreras</span>
-        	  	</router-link>
+				</router-link>
         	</li>
         	<li class="nav-item">
-        	  	<router-link class="nav-link " :to="{ name: 'Courses' }">
+				<router-link class="nav-link " :to="{ name: 'Courses' }">
 					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-        	  	  	  	<i class="ni ni-books text-danger text-sm opacity-10"></i>
+						<i class="ni ni-books text-danger text-sm opacity-10"></i>
 					</div>
 					<span class="nav-link-text ms-1">Cursos</span>
-        	  	</router-link>
+				</router-link>
         	</li>
         	<li class="nav-item">
-        	  	<router-link class="nav-link " :to="{ name: 'Sections' }">
+				<router-link class="nav-link " :to="{ name: 'Sections' }">
 					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-        	  	  	  	<i class="ni ni-bold text-info text-sm opacity-10"></i>
+						<i class="ni ni-bold text-warning text-sm opacity-10"></i>
 					</div>
 					<span class="nav-link-text ms-1">Secciones</span>
-        	  	</router-link>
+				</router-link>
+        	</li>
+        	<li class="nav-item">
+				<router-link class="nav-link " :to="{ name: 'Schedules' }">
+					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+						<i class="ni ni-book-bookmark text-info text-sm opacity-10"></i>
+					</div>
+					<span class="nav-link-text ms-1">Horarios</span>
+				</router-link>
         	</li>
         	<li class="nav-item">
         	  	<router-link class="nav-link " :to="{ name: 'Countries' }">
-        	  	  	<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-        	  	    	<i class="ni ni-world text-info text-sm opacity-10"></i>
-        	  	  	</div>
-        	  	  	<span class="nav-link-text ms-1">Países</span>
-        	  	</router-link>
+					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+						<i class="ni ni-world text-info text-sm opacity-10"></i>
+					</div>
+					<span class="nav-link-text ms-1">Países</span>
+				</router-link>
         	</li>
         	<li class="nav-item">
-        	  	<router-link class="nav-link " :to="{ name: 'Departments' }">
-        	  	  	<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-        	  	  	  	<i class="ni ni-square-pin text-success text-sm opacity-10"></i>
-        	  	  	</div>
-        	  	  	<span class="nav-link-text ms-1">Departamentos</span>
-        	  	</router-link>
+				<router-link class="nav-link " :to="{ name: 'Departments' }">
+					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+						<i class="ni ni-square-pin text-success text-sm opacity-10"></i>
+					</div>
+					<span class="nav-link-text ms-1">Departamentos</span>
+				</router-link>
         	</li>
         	<li class="nav-item">
-        	  	<router-link class="nav-link " :to="{ name: 'Regions' }">
-        	  	  	<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-        	  	  	 	<i class="ni ni-world-2 text-primary text-sm opacity-10"></i>
-        	  	  	</div>
-        	  	  	<span class="nav-link-text ms-1">Regiones</span>
-        	  	</router-link>
+				<router-link class="nav-link " :to="{ name: 'Regions' }">
+					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+						<i class="ni ni-world-2 text-primary text-sm opacity-10"></i>
+					</div>
+					<span class="nav-link-text ms-1">Regiones</span>
+				</router-link>
         	</li>
+			<li class="nav-item">
+				  <router-link class="nav-link " :to="{ name: 'Users' }">
+						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+							  <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+						</div>
+						<span class="nav-link-text ms-1">Usuarios</span>
+				  </router-link>
+			</li>
         	<li class="nav-item">
-        	  	<router-link class="nav-link " :to="{ name: 'Roles' }">
+				<router-link class="nav-link " :to="{ name: 'Roles' }">
         	  	  	<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
         	  	  	  	<i class="ni ni-circle-08 text-danger text-sm opacity-10"></i>
         	  	  	</div>
