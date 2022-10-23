@@ -74,6 +74,14 @@
 					<span class="nav-link-text ms-1">Estudiantes</span>
 				</router-link>
 			</li>
+			<li class="nav-item">
+				  <router-link class="nav-link " :to="{ name: 'Teachers' }">
+						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+							  <i class="ni ni-single-02 text-secondary text-sm opacity-10"></i>
+						</div>
+						<span class="nav-link-text ms-1">Profesores</span>
+				  </router-link>
+			</li>
         	<li class="nav-item">
         	  	<router-link class="nav-link " :to="{ name: 'Countries' }">
 					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -90,14 +98,6 @@
 					<span class="nav-link-text ms-1">Regiones</span>
 				</router-link>
         	</li>
-			<li class="nav-item">
-				  <router-link class="nav-link " :to="{ name: 'Users' }">
-						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							  <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
-						</div>
-						<span class="nav-link-text ms-1">Usuarios</span>
-				  </router-link>
-			</li>
         	<li class="nav-item">
 				<router-link class="nav-link " :to="{ name: 'Roles' }">
         	  	  	<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
