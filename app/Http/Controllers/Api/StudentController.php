@@ -20,7 +20,13 @@ class StudentController extends ResponseController
     public function index()
     {
         try {
-            $this->records = Student::with('career_assigned')->get();
+            $students = Student::with('career_assigned')->get();
+            //Retornar informacion de carrera y centro
+            foreach ($students as $student) {
+                $student->career_assigned->career;
+                $student->career_assigned->center;
+            }
+            $this->records = $students;
             $this->result = true;
             $this->message = 'Estudiantes consultados correctamente';
             $this->statusCode = 200;

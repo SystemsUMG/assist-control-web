@@ -66,20 +66,20 @@
 					<span class="nav-link-text ms-1">Semestres</span>
 				</router-link>
         	</li>
+			<li class="nav-item">
+				<router-link class="nav-link " :to="{ name: 'Students' }">
+					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+						<i class="ni ni-badge text-primary text-sm opacity-10"></i>
+					</div>
+					<span class="nav-link-text ms-1">Estudiantes</span>
+				</router-link>
+			</li>
         	<li class="nav-item">
         	  	<router-link class="nav-link " :to="{ name: 'Countries' }">
 					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
 						<i class="ni ni-world text-info text-sm opacity-10"></i>
 					</div>
 					<span class="nav-link-text ms-1">Países</span>
-				</router-link>
-        	</li>
-        	<li class="nav-item">
-				<router-link class="nav-link " :to="{ name: 'Departments' }">
-					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-						<i class="ni ni-square-pin text-success text-sm opacity-10"></i>
-					</div>
-					<span class="nav-link-text ms-1">Departamentos</span>
 				</router-link>
         	</li>
         	<li class="nav-item">
