@@ -49,12 +49,12 @@ class CenterController extends ResponseController
         $center = Center::create($validate);
 
         //Crear career assigned por cada carrera
-        $careers = explode(',', $request->careers_assignments);
-        foreach($careers as $career) {
-            CareerAssigned::create([
-                'center_id' => $center->id, 
-                'career_id' => (int) $career
-            ]);
+        $assigned_career = New AssignedCareerController();
+        if(!empty($request->careers_assignments)) {
+            $careers = explode(',', $request->careers_assignments);
+            foreach($careers as $career) {
+                $assigned_career->storeCareerAssigned($center->id, $career);
+            }
         }
 
         if($center){
@@ -102,8 +102,48 @@ class CenterController extends ResponseController
             'name' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255']
         ]);
+        
         if($center){
             $center->update($validate);
+            //Crear career assigned por cada carrera
+            $assigned_career = New AssignedCareerController();
+            $careers_assignments = CareerAssigned::where('center_id', $center->id)->get();
+            //Vacio (se eliminan todos)
+            if(empty($request->careers_assignments)) {
+                //Eliminar todos los registros
+                foreach($careers_assignments as $career_assignment) {
+                    $assigned_career->destroyCareerAssigned($center->id, $career_assignment->career_id);
+                }
+            } else { //No vacio se deben eliminar los que no vengan y agregar los nuevos
+                $careers = explode(',', $request->careers_assignments);
+                $olds = [];
+                $news = [];
+                //Obtener ids de carreras nuevos
+                foreach($careers as $career) {
+                    if (!in_array($career, $careers_assignments->pluck('career_id')->toArray())) {
+                        array_push($news, $career);
+                    }
+                }
+                //Obtener ids a eliminar (los que no vienen en request)
+                foreach($careers_assignments as $career_assignment) {
+                    if (!in_array($career_assignment->career_id, $careers)) {
+                        array_push($olds, $career_assignment->career_id);
+                    }
+                }
+                //Borrar registros 
+                if (!empty($olds)) {
+                    foreach ($olds as $old) {
+                        $assigned_career->destroyCareerAssigned($center->id, $old);
+                    }
+                }
+                //Crear registros
+                if (!empty($news)) {
+                    foreach ($news as $new) {
+                        $assigned_career->storeCareerAssigned($center->id, $new);
+                    }
+                }
+            }
+
             $this->result = true;
             $this->message = 'Registro actualizado exitosamente.';
         } else {
@@ -124,6 +164,13 @@ class CenterController extends ResponseController
         try {
             $center = Center::find($id);
             if($center){
+                $assigned_career = New AssignedCareerController();
+                $careers_assignments = CareerAssigned::where('center_id', $center->id)->get();
+                if (!empty($careers_assignments)) {
+                    foreach($careers_assignments as $career_assignment) {
+                        $assigned_career->destroyCareerAssigned($center->id, $career_assignment->career_id);
+                    }
+                }
                 $center->delete();
                 $this->result = true;
                 $this->message = 'Borrado correctamente.';

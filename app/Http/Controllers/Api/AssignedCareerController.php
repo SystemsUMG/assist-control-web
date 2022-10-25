@@ -141,4 +141,51 @@ class AssignedCareerController extends ResponseController
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
         }
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  int  $center
+     * @param  int  $career
+     * @return Boolean
+     */
+    public function storeCareerAssigned($center, $career)
+    {
+        try {
+            $assigned_career = CareerAssigned::create([
+                'center_id' => $center, 
+                'career_id' => (int) $career
+            ]);
+            if ($assigned_career) {
+                $this->result = true;
+            }
+            return $this->result;
+        } catch (Exception $exception) {
+            return $this->result;
+        }
+    }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $center
+     * @param  int  $career
+     * @return Boolean
+     */
+    public function destroyCareerAssigned($center, $career)
+    {
+        try {
+            $assigned_career = CareerAssigned::where([
+                'center_id' => $center, 
+                'career_id' => (int) $career
+            ]);
+            if ($assigned_career) {
+                $assigned_career->delete();
+                $this->result = true;
+            }
+            return $this->result;
+        } catch (Exception) {
+            return $this->result;
+        }
+    }
 }

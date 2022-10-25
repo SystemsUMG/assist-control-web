@@ -28,9 +28,9 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="address" class="form-control-label">Carreras</label>
-                                    <Multiselect id="address" v-model="data.careers_assignments" :options="careers" mode="tags" :searchable="true" :close-on-select="false" :object="true" :class="errors.address ? 'is-invalid' : ''"/>
-                                    <small class="invalid-feedback">{{ errors.careers ? errors.careers[0] : '' }}</small>
+                                    <label for="careers_assignments" class="form-control-label">Carreras</label>
+                                    <Multiselect id="careers_assignments" v-model="data.careers_assignments" :options="careers" mode="tags" :searchable="true" :close-on-select="false" :object="true" :class="errors.careers_assignments ? 'is-invalid' : ''"/>
+                                    <small class="invalid-feedback">{{ errors.careers_assignments ? errors.careers_assignments[0] : '' }}</small>
                                 </div>
                             </div>
                         </div>
@@ -67,6 +67,7 @@ export default {
             message: '',
             loader: {},
             data: {
+                id: '',
                 name: '',
                 address: '',
                 careers_assignments: []
@@ -89,10 +90,11 @@ export default {
                 axios({url: '/centers/' + _this.id, method: 'GET' })
                     .then((resp) => {
                         if (resp.data.result) {
+                            _this.data.id = resp.data.records.id
                             _this.data.name = resp.data.records.name
                             _this.data.address = resp.data.records.address
                             resp.data.records.careers_assignments.map(function(item, key) {
-                            _this.data.careers_assignments.push({value: item.id, label: item.career.name})
+                            _this.data.careers_assignments.push({value: item.career_id, label: item.career.name})
                         })
                         } else {
                             _this.showToast('error', resp.data.message)
@@ -179,7 +181,16 @@ export default {
                 let form = new FormData()
                 $.each(this.data, function(key, item) {
                     if(item != null){
-                        form.append(key, item)
+                        //Obtener value de objeto para careers assignments
+                        if (key == "careers_assignments") {
+                            let careers_assignments = []
+                            item.map(function(element) {
+                                careers_assignments.push(element.value)
+                            })
+                            form.append(key, careers_assignments)
+                        } else {
+                            form.append(key, item)
+                        }
                     }
                 })
                 if(this.method == 'PUT'){
