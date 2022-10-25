@@ -26,6 +26,13 @@
                                     <small class="invalid-feedback">{{ errors.address ? errors.address[0] : '' }}</small>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="address" class="form-control-label">Carreras</label>
+                                    <Multiselect id="address" v-model="data.careers_assignments" :options="careers" mode="tags" :searchable="true" :close-on-select="false" :object="true" :class="errors.address ? 'is-invalid' : ''"/>
+                                    <small class="invalid-feedback">{{ errors.careers ? errors.careers[0] : '' }}</small>
+                                </div>
+                            </div>
                         </div>
                         <hr class="horizontal dark">
                         <div class="row justify-content-center">
@@ -49,7 +56,10 @@
     </div>
 </template>
 <script>
+import Multiselect from '@vueform/multiselect'
+
 export default {
+    components: { Multiselect },
     props: ['open', 'method', 'id'],
     data(){
         return {
@@ -59,21 +69,31 @@ export default {
             data: {
                 name: '',
                 address: '',
+                careers_assignments: []
             },
             load: false,
             count: 0,
             url: '',
             errors: {},
+            careers: [{
+                value: '',
+                label: ''
+            }],
         }
     },
     computed: {
         OPEN: function() {
             let _this = this
+            _this.loadData('careers')
             if(_this.method == 'PUT') {
                 axios({url: '/centers/' + _this.id, method: 'GET' })
                     .then((resp) => {
                         if (resp.data.result) {
-                            _this.data = resp.data.records
+                            _this.data.name = resp.data.records.name
+                            _this.data.address = resp.data.records.address
+                            resp.data.records.careers_assignments.map(function(item, key) {
+                            _this.data.careers_assignments.push({value: item.id, label: item.career.name})
+                        })
                         } else {
                             _this.showToast('error', resp.data.message)
                             _this.CLOSE()
@@ -116,6 +136,34 @@ export default {
             } else {
                 this.loader.hide()
             }
+        },
+        loadData(url = '') {
+            let _this = this
+            axios({url: url , method: 'GET'})
+			.then((resp) => {
+			    if(resp.data.records.length > 0) {
+                    let records = resp.data.records
+                    switch(url) {
+                    case 'careers':
+                        resp.data.records.map(function(item, key) {
+                            _this.careers.push({value: item.id, label: item.name})
+                        })
+                        break;
+                    default:
+                        _this.careers = records
+                    } 
+					_this.icon = 'success'
+					_this.message = resp.data.message
+				} else {
+					_this.icon = 'error'
+					_this.message = 'No existen ' + url + ' registrados'
+                    _this.CLOSE()
+				}
+				_this.showToast(_this.icon, _this.message)
+			}).catch((err) => {
+				_this.showToast(_this.icon)
+                _this.CLOSE()
+			})
         },
         CLOSE: function(){
             this.$emit('close')
@@ -169,3 +217,4 @@ export default {
     }
 }
 </script>
+<style src="@vueform/multiselect/themes/default.css"></style>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Response\ResponseController;
+use App\Models\CareerAssigned;
 use App\Models\Center;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,7 +19,15 @@ class CenterController extends ResponseController
      */
     public function index()
     {
-        $this->records = Center::all();
+        $centers = Center::with('careers_assignments')->get();
+        //Retornar informacion de carrera
+        foreach ($centers as $center) {
+            foreach ($center->careers_assignments as $career_assignment) {
+                $career_assignment->career;
+            }
+        }
+
+        $this->records = $centers;
         $this->result = true;
         $this->message = 'Centros consultados exitosamente';
         $this->statusCode = 200;
@@ -38,6 +47,16 @@ class CenterController extends ResponseController
             'address' => ['required', 'string', 'max:255']
         ]);
         $center = Center::create($validate);
+
+        //Crear career assigned por cada carrera
+        $careers = explode(',', $request->careers_assignments);
+        foreach($careers as $career) {
+            CareerAssigned::create([
+                'center_id' => $center->id, 
+                'career_id' => (int) $career
+            ]);
+        }
+
         if($center){
             $this->result = true;
             $this->message = 'Registro creado exitosamente.';
@@ -55,6 +74,9 @@ class CenterController extends ResponseController
     public function show($id)
     {
         $center = Center::find($id);
+        foreach ($center->careers_assignments as $career_assignment) {
+            $career_assignment->career;
+        }
         $this->statusCode = 200;
         if($center){
             $this->records = $center;
