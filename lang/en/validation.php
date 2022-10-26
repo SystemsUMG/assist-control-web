@@ -170,6 +170,13 @@ return [
         'country_id' => 'pais',
         'description' => 'descripción',
         'letter' => 'nombre',
+        'begin_hour' => 'hora de inicio',
+        'end_hour' => 'hora final',
+        'number' => 'número',
+        'year' => 'año',
+        'last_name' => 'apellido',
+        'active' => 'activo',
+        'phone' => 'teléfono',
     ],
 
 ];
