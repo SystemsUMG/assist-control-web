@@ -16,6 +16,7 @@ class TeacherCourseAssigned extends Model
         'semester_id',
         'section_id',
         'schedule_id',
+        'total_assists',
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
@@ -23,11 +24,6 @@ class TeacherCourseAssigned extends Model
     public function students_assigned()
     {
         return $this->hasMany(StudentCourseAssigned::class, 'teacher_course_assigned_id', 'id');
-    }
-
-    public function attendance_data()
-    {
-        return $this->hasOne(AttendanceData::class, 'teacher_course_assigned_id', 'id');
     }
 
     public function career_assigned()
