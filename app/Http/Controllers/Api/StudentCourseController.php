@@ -26,7 +26,6 @@ class StudentCourseController extends ResponseController
                             $query->with(['center', 'career']);
                         },
                         'students_assigned',
-                        'attendance_data',
                         'teacher',
                         'section',
                         'schedule',
@@ -86,7 +85,6 @@ class StudentCourseController extends ResponseController
                             $query->with(['center', 'career']);
                         },
                         'students_assigned',
-                        'attendance_data',
                         'teacher',
                         'section',
                         'schedule',
@@ -160,6 +158,42 @@ class StudentCourseController extends ResponseController
         } catch (Exception) {
             $this->message = 'Error: otros datos dependen de este registro';
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     * @param  int  $id_student
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function studentCourses($student_id)
+    {
+        try {
+            $student_course_assigneds = StudentCourseAssigned::where('student_id', $student_id)->get();
+            $courses_assigneds = [];
+            //Mapeo de datos para response records
+            foreach ($student_course_assigneds as $record) {
+                $student_course = collect();
+                $item = $record->teacher_courses_assigned;
+                $schedule = New ScheduleController(); //Instanciar para formatear hora
+
+                $student_course->put('id',              $record->id);
+                $student_course->put('student_id',      $record->student_id);
+                $student_course->put('tc_assigned_id',  $record->teacher_course_assigned_id);
+                $student_course->put('teacher',         $item->teacher->name." ".$item->teacher->last_name);
+                $student_course->put('schedule',        $schedule->formatTime($item->schedule->begin_hour)." - ".$schedule->formatTime($item->schedule->end_hour));
+                $student_course->put('course',          $item->course->name." - ".$item->section->letter);
+
+                array_push($courses_assigneds, $student_course);
+            }
+
+            $this->records = $courses_assigneds;
+            $this->result = true;
+            $this->message = 'Datos consultados correctamente';
+            $this->statusCode = 200;
+            return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
+        } catch (Exception $exception) {
+            return $this->jsonResponse($this->records, $this->result, $this->message = $exception->getMessage(), $this->statusCode);
         }
     }
 }

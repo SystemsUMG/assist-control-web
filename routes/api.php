@@ -54,6 +54,7 @@ Route::name('api.')
         Route::apiResource('student-courses', StudentCourseController::class);
         Route::apiResource('teacher-courses', TeacherCourseAssignedController::class);
         Route::get('courses-list/{id}', [CourseController::class, 'courses']);
+        Route::get('student-courses-list/{id_student}',  [StudentCourseController::class, 'studentCourses']);
         Route::get('graphics', [DashboardController::class, 'index']);
         Route::post('logout', [AuthController::class, 'logout']);
     });
