@@ -19,6 +19,7 @@
                             <tr>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Carreras</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Acciones</th>
                             </tr>
                             </thead>
@@ -32,6 +33,15 @@
                                 <td>
                                     <div class="px-3">
                                         <span class="text-secondary text-xs font-weight-bold ">{{ center.address }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="px-3">
+                                        <ul>
+                                            <li v-for="career_assignment in center.careers_assignments" :key="career_assignment.career.id">
+                                                <span class="text-secondary text-xs font-weight-bold">{{ career_assignment.career.name }}</span>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </td>
                                 <td class="align-middle">

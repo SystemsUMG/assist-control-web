@@ -26,6 +26,13 @@
                                     <small class="invalid-feedback">{{ errors.address ? errors.address[0] : '' }}</small>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="careers_assignments" class="form-control-label">Carreras</label>
+                                    <Multiselect id="careers_assignments" v-model="data.careers_assignments" :options="careers" mode="tags" :searchable="true" :close-on-select="false" :object="true" :class="errors.careers_assignments ? 'is-invalid' : ''"/>
+                                    <small class="invalid-feedback">{{ errors.careers_assignments ? errors.careers_assignments[0] : '' }}</small>
+                                </div>
+                            </div>
                         </div>
                         <hr class="horizontal dark">
                         <div class="row justify-content-center">
@@ -49,7 +56,10 @@
     </div>
 </template>
 <script>
+import Multiselect from '@vueform/multiselect'
+
 export default {
+    components: { Multiselect },
     props: ['open', 'method', 'id'],
     data(){
         return {
@@ -57,23 +67,35 @@ export default {
             message: '',
             loader: {},
             data: {
+                id: '',
                 name: '',
                 address: '',
+                careers_assignments: []
             },
             load: false,
             count: 0,
             url: '',
             errors: {},
+            careers: [{
+                value: '',
+                label: ''
+            }],
         }
     },
     computed: {
         OPEN: function() {
             let _this = this
+            _this.loadData('careers')
             if(_this.method == 'PUT') {
                 axios({url: '/centers/' + _this.id, method: 'GET' })
                     .then((resp) => {
                         if (resp.data.result) {
-                            _this.data = resp.data.records
+                            _this.data.id = resp.data.records.id
+                            _this.data.name = resp.data.records.name
+                            _this.data.address = resp.data.records.address
+                            resp.data.records.careers_assignments.map(function(item, key) {
+                            _this.data.careers_assignments.push({value: item.career_id, label: item.career.name})
+                        })
                         } else {
                             _this.showToast('error', resp.data.message)
                             _this.CLOSE()
@@ -117,6 +139,34 @@ export default {
                 this.loader.hide()
             }
         },
+        loadData(url = '') {
+            let _this = this
+            axios({url: url , method: 'GET'})
+			.then((resp) => {
+			    if(resp.data.records.length > 0) {
+                    let records = resp.data.records
+                    switch(url) {
+                    case 'careers':
+                        resp.data.records.map(function(item, key) {
+                            _this.careers.push({value: item.id, label: item.name})
+                        })
+                        break;
+                    default:
+                        _this.careers = records
+                    } 
+					_this.icon = 'success'
+					_this.message = resp.data.message
+				} else {
+					_this.icon = 'error'
+					_this.message = 'No existen ' + url + ' registrados'
+                    _this.CLOSE()
+				}
+				_this.showToast(_this.icon, _this.message)
+			}).catch((err) => {
+				_this.showToast(_this.icon)
+                _this.CLOSE()
+			})
+        },
         CLOSE: function(){
             this.$emit('close')
         },
@@ -131,7 +181,16 @@ export default {
                 let form = new FormData()
                 $.each(this.data, function(key, item) {
                     if(item != null){
-                        form.append(key, item)
+                        //Obtener value de objeto para careers assignments
+                        if (key == "careers_assignments") {
+                            let careers_assignments = []
+                            item.map(function(element) {
+                                careers_assignments.push(element.value)
+                            })
+                            form.append(key, careers_assignments)
+                        } else {
+                            form.append(key, item)
+                        }
                     }
                 })
                 if(this.method == 'PUT'){
@@ -169,3 +228,4 @@ export default {
     }
 }
 </script>
+<style src="@vueform/multiselect/themes/default.css"></style>
