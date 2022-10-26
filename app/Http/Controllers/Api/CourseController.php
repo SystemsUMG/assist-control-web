@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Response\ResponseController;
+use App\Models\CareerAssigned;
 use App\Models\Course;
 use Exception;
 use Illuminate\Http\Request;
@@ -127,5 +128,16 @@ class CourseController extends ResponseController
             $this->message = 'Error: otros datos dependen de este registro';
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
         }
+    }
+
+    public function courses($id) {
+        $career_assign = CareerAssigned::find($id);
+        if ($career_assign) {
+            $this->records = Course::where('career_id', $career_assign->career_id)->get();
+            $this->result = true;
+        }
+        $this->message = 'Cursos consultados correctamente';
+        $this->statusCode = 200;
+        return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
     }
 }

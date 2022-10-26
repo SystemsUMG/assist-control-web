@@ -23,7 +23,6 @@ class TeacherCourseAssignedController extends ResponseController
                     $query->with(['center', 'career']);
                 },
                 'students_assigned',
-                'attendance_data',
                 'teacher',
                 'section',
                 'schedule',
@@ -54,6 +53,7 @@ class TeacherCourseAssignedController extends ResponseController
             'semester_id'           => ['required', 'integer', 'exists:semesters,id'],
             'section_id'            => ['required', 'integer', 'exists:sections,id'],
             'schedule_id'           => ['required', 'integer', 'exists:schedules,id'],
+            'total_assists'         => ['required', 'integer'],
         ]);
         try {
             $assigneds = TeacherCourseAssigned::create($validate);
@@ -82,7 +82,6 @@ class TeacherCourseAssignedController extends ResponseController
                     $query->with(['center', 'career']);
                 },
                 'students_assigned',
-                'attendance_data',
                 'teacher',
                 'section',
                 'schedule',
@@ -119,6 +118,7 @@ class TeacherCourseAssignedController extends ResponseController
             'semester_id'           => ['required', 'integer', 'exists:semesters,id'],
             'section_id'            => ['required', 'integer', 'exists:sections,id'],
             'schedule_id'           => ['required', 'integer', 'exists:schedules,id'],
+            'total_assists'         => ['required', 'integer'],
         ]);
         try {
             $assigned = TeacherCourseAssigned::find($id);
