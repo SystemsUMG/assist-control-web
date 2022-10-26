@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('semester_id')->constrained('semesters');
             $table->foreignId('section_id')->constrained('sections');
             $table->foreignId('schedule_id')->constrained('schedules');
+            $table->integer('total_assists')->nullable(false);
             $table->timestamps();
         });
     }
