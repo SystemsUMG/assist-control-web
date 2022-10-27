@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('student_course_assigned_id')->nullable(false);
             $table->dateTime('schedule_register')->nullable(false);
+            $table->string('observations')->nullable();
             $table->foreign('student_course_assigned_id')->references('id')->on('student_course_assigneds');
             $table->timestamps();
         });

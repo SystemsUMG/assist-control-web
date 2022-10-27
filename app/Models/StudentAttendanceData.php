@@ -10,9 +10,9 @@ class StudentAttendanceData extends Model
     use HasFactory;
 
     protected $fillable = [
-        'attendance_data_id',
         'student_course_assigned_id',
         'schedule_register',
+        'observations',
     ];
 
     protected $hidden = ['created_at', 'updated_at'];

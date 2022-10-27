@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AssignedCareerController;
+use App\Http\Controllers\Api\AttendaceController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CareerController;
 use App\Http\Controllers\Api\CenterController;
@@ -43,6 +44,7 @@ Route::name('api.')
     //->middleware('auth:sanctum')
     ->group(function () {
         Route::apiResource('centers', CenterController::class);
+        Route::apiResource('attendances', AttendaceController::class);
         Route::apiResource('careers', CareerController::class);
         Route::apiResource('assigned-careers', AssignedCareerController::class);
         Route::apiResource('students', StudentController::class);
