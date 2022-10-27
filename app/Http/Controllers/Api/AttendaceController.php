@@ -35,9 +35,15 @@ class AttendaceController extends ResponseController
             $hour_registered = date('H:i:s');
             $this->message = 'No estás en horario de curso';
             if ($hour_registered >= $begin_hour  && $hour_registered <= $end_hour) {
-                $validate['schedule_register'] = date('Y-m-d H:i:s');
-                StudentAttendanceData::create($validate);
-                $this->message = 'Asistencia registrada';
+                $attendance_today = StudentAttendanceData::where('student_course_assigned_id', $request->student_course_assigned_id)
+                    ->whereBetween('schedule_register', [date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59')])->first();
+                if (!$attendance_today) {
+                    $validate['schedule_register'] = date('Y-m-d H:i:s');
+                    StudentAttendanceData::create($validate);
+                    $this->message = 'Asistencia registrada';
+                } else {
+                    $this->message = 'Ya has registrado tu asistencia hoy';
+                }
             }
             $this->result = true;
             $this->statusCode = 200;

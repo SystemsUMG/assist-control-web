@@ -184,7 +184,7 @@ class StudentCourseController extends ResponseController
                 $student_course->put('schedule',        $schedule->formatTime($item->schedule->begin_hour)." - ".$schedule->formatTime($item->schedule->end_hour));
                 $student_course->put('course',          $item->course->name." - ".$item->section->letter);
 
-                array_push($courses_assigneds, $student_course);
+                $courses_assigneds[] = $student_course;
             }
 
             $this->records = $courses_assigneds;
@@ -195,5 +195,29 @@ class StudentCourseController extends ResponseController
         } catch (Exception $exception) {
             return $this->jsonResponse($this->records, $this->result, $this->message = $exception->getMessage(), $this->statusCode);
         }
+    }
+
+    public function percentage($student_id) {
+        try {
+            $student_course_assigneds = StudentCourseAssigned::where('student_id', $student_id)->get();
+            $this->records = [];
+            foreach ($student_course_assigneds as $course) {
+                $percentage = $this->division(100, $course->teacher_courses_assigned->total_assists) * $course->attendances->count();
+                $this->records[] = [
+                    'course' => $course->teacher_courses_assigned->course->name,
+                    'percentage' => round($percentage).'%',
+                ];
+            }
+            $this->result = true;
+            $this->message = 'Datos consultados correctamente';
+            $this->statusCode = 200;
+            return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
+        } catch (Exception $exception) {
+            return $this->jsonResponse($this->records, $this->result, $this->message = $exception->getMessage(), $this->statusCode);
+        }
+    }
+
+    public function division($number_1, $number_2) {
+        return $number_2 != 0 ? $number_1 / $number_2 : 0;
     }
 }
