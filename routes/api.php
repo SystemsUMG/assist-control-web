@@ -58,12 +58,14 @@ Route::name('api.')
         Route::get('courses-list/{id}', [CourseController::class, 'courses']);
         Route::get('student-courses-list/{id_student}',  [StudentCourseController::class, 'studentCourses']);
         Route::get('percentages/{id_student}',  [StudentCourseController::class, 'percentage']);
-        Route::post('logout', [AuthController::class, 'logout']);
         Route::group(['prefix' => 'statistics/'], function () {
             Route::any('totals', [DashboardController::class, 'totals']);
             Route::any('student', [DashboardController::class, 'reportStudent']);
             Route::any('semester', [DashboardController::class, 'reportSemester']);
             Route::any('center', [DashboardController::class, 'reportCenter']);
             Route::any('section', [DashboardController::class, 'reportSection']);
+        });
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::post('logout', [AuthController::class, 'logout']);
         });
     });
