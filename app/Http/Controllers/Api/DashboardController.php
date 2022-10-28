@@ -7,12 +7,14 @@ use App\Http\Controllers\Response\ResponseController;
 use App\Models\Career;
 use App\Models\Course;
 use App\Models\StudentAttendanceData;
+use App\Models\StudentCourseAssigned;
+use App\Models\TeacherCourseAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class DashboardController extends ResponseController
 {
-    public function index (Request $request) {
+    public function index () {
         $careers = Career::all();
 
         $array_countries = [];
@@ -38,11 +40,11 @@ class DashboardController extends ResponseController
         return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
     }
 
-    public function reportStudent($student_id) {
+    public function reportStudent(Request $request) {
         try {
             $array_date = [];
             $array_attendances  = [];
-            $attendances = StudentAttendanceData::whereRelation('student_course_assigned', 'student_id', $student_id)->get();
+            $attendances = StudentAttendanceData::whereRelation('student_course_assigned', 'student_id', $request->stundent_id)->get();
             $dates = $attendances->unique('created_at');
             foreach ($dates as $date) {
                 $array_date[] = Carbon::parse( $date->created_at)->format('d/m/Y');
@@ -58,4 +60,46 @@ class DashboardController extends ResponseController
         }
         return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
     }
+
+    public function reportSemester(Request $request) {
+        try {
+            $semester = $request->semester_id;
+            $career = $request->career_id;
+            $array_course = [];
+            $array_attendances  = [];
+            $teacher_courses = TeacherCourseAssigned::where('semester_id', $semester)
+                ->whereRelation('career_assigned', 'career_id', $career)->get();
+            foreach ($teacher_courses as $teacher_course) {
+                $array_course[] = $teacher_course->course->name.' - '.$teacher_course->section->letter;
+                $collect_attendance = [];
+                foreach ($teacher_course->students_assigned as $student_assigned) {
+                    $collect_attendance[] = collect($student_assigned->attendances)->count();
+                }
+                $array_attendances[] = collect($collect_attendance)->sum();
+            }
+            $this->records['courses'] = $array_course;
+            $this->records['attendances'] = $array_attendances;
+            $this->result = true;
+            $this->statusCode = 200;
+            $this->message = "Registros consultados exitosamente.";
+        } catch(\Exception $exception) {
+            $this->message = $exception->getMessage();
+        }
+        return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
+    }
+
+//    public function reportCareer(Request $request) {
+//        $careers = Career::whereRelation('centers_assigned', 'center_id', $request->center_id)->get();
+//        $array_career = [];
+//        $array_attendances  = [];
+//        foreach ($careers as $career) {
+//            $students_assigned = StudentCourseAssigned::whereHas('teacher_courses_assigned', function ($query) use ($career){
+//                $query->whereHas('career_assigned', function ($query)use ($career) {
+//                    $query->where('career_id', $career);
+//                });
+//            })->get();
+//            $array_career[] =
+//        }
+//
+//    }
 }

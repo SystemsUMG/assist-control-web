@@ -58,7 +58,11 @@ Route::name('api.')
         Route::get('courses-list/{id}', [CourseController::class, 'courses']);
         Route::get('student-courses-list/{id_student}',  [StudentCourseController::class, 'studentCourses']);
         Route::get('percentages/{id_student}',  [StudentCourseController::class, 'percentage']);
-        Route::get('graphics', [DashboardController::class, 'index']);
-        Route::get('statistics-student/{student_id}', [DashboardController::class, 'reportStudent']);
         Route::post('logout', [AuthController::class, 'logout']);
+        Route::group(['prefix' => 'statistics/'], function () {
+            Route::any('graphics', [DashboardController::class, 'index']);
+            Route::any('student', [DashboardController::class, 'reportStudent']);
+            Route::any('semester', [DashboardController::class, 'reportSemester']);
+            Route::any('career', [DashboardController::class, 'reportCareer']);
+        });
     });
