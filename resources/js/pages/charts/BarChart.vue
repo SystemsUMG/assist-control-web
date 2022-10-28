@@ -1,5 +1,5 @@
 <template>
-    <Bar :chart-options="chartOptions" :chart-data="chartData"/>
+    <Bar :chart-options="chartData" :chart-data="chartOptions"/>
 </template>
 <script>
 import { Bar } from 'vue-chartjs'
@@ -10,9 +10,9 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, LinearScale, PointElement, 
 export default {
     components: { Bar },
     props: ['labels', 'values'],
-    data() {
-        return {
-            chartData: {
+    computed: {
+        chartData() {
+            return {
                 labels: this.labels,
                 datasets: [{
                     label: "Asistencias",
@@ -24,8 +24,10 @@ export default {
                     data: this.values,
                     maxBarThickness: 20
                 }]
-            },
-            chartOptions: {
+            }
+        },
+        chartOptions() {
+            return {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {

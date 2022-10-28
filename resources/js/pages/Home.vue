@@ -116,33 +116,47 @@
         <div class="col-lg-6 mb-lg-0 mb-4">
 			<div class="card z-index-2 h-100">
 				<div class="card-header p-0 pt-3 position-relative mx-3 z-index-2 bg-transparent">
-                    <h6 class="text-capitalize">Estudiantes</h6>
+                    <h6 class="text-capitalize">Cursos</h6>
 					<div class="row align-items-center">
-                        <div class="col-md-5 p-1">
+                        <div class="col-md-6 p-1">
                             <div class="form-group mb-0">
-                                <label for="student" class="form-control-label">Estudiante</label>
-								<select  id="student" class="form-select" v-model="student.student_id" :class="errors.students ? 'is-invalid' : ''" required>
+                                <label for="begin_date" class="form-control-label">Fecha Inicio</label>
+								<input id="begin_date" class="form-control" type="date" v-model="section.begin_date" :class="errors.sections.begin_date ? 'is-invalid' : ''"/>
+                                <small class="invalid-feedback">{{ errors.sections.begin_date ? errors.sections.begin_date : '' }}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <div class="form-group mb-0">
+                                <label for="end_date" class="form-control-label">Fecha Fin</label>
+								<input id="end_date" class="form-control" type="date" v-model="section.end_date" :class="errors.sections.end_date ? 'is-invalid' : ''"/>
+                                <small class="invalid-feedback">{{ errors.sections.end_date ? errors.sections.end_date : '' }}</small>
+                            </div>
+                        </div>
+						<div class="col-md-9 p-1">
+                            <div class="form-group mb-0">
+                                <label for="course" class="form-control-label">Curso</label>
+								<select  id="course" class="form-select" v-model="section.teacher_course_assigneds_id" :class="errors.sections.course ? 'is-invalid' : ''" required>
                                     <option value="">Seleccione una opción</option>
-                                    <option v-for="student in students" :value="student.id" :key="student.id">{{ student.name + ' ' + student.last_name }}</option>
+                                    <option v-for="course in courses" :value="course.id" :key="course.id">{{ course.course.name + ' - ' + course.section.letter }}</option>
                                 </select>
-                                <small class="invalid-feedback">{{ errors.students ? errors.students : '' }}</small>
+                                <small class="invalid-feedback">{{ errors.sections.course ? errors.sections.course : '' }}</small>
                             </div>
                         </div>
 						<div class="col p-1 text-end">
-                            <button type="button" @click="getGraphicsData('student')" class="btn btn-dark btn-sm mb-0">
+                            <button type="button" @click="getGraphicsData('section')" class="btn btn-dark btn-sm mb-0">
 								<i class="fa fa-search text-white text-sm opacity-10"></i>
 							</button>
                         </div>
 					</div>
                     <hr class="dark horizontal">
                     <div class="d-flex ">
-                    	<p class="mb-0 text-sm">Asistencia de Estudiantes por Fecha</p>
+                    	<p class="mb-0 text-sm">Asistencia por Curso</p>
                 	</div>
             	</div>
             	<div class="card-body p-3">
 					<div class="border-radius-lg py-3 pe-1">
                     	<div class="chart">
-                            <line-chart :labels="labels.student" :values="values.student" v-if="show" style="height: 170px"/>
+                            <bar-chart :labels="labels.section" :values="values.section" v-if="show" style="height: 170px"/>
                 		</div>
                     </div>
             	</div>
@@ -251,16 +265,19 @@ export default {
 				student: [],
 				semester: [],
 				center: [],
+				section: [],
 			},
 			values: {
 				student: [],
 				semester: [],
 				center: [],
+				section: [],
 			},
 			students: [],
 			semesters: [],
 			centers: [],
 			careers: [],
+			courses: [],
 			student: {
                 student_id: '',
             },
@@ -271,6 +288,11 @@ export default {
 			center: {
 				center_id: '',
 			},
+			section: {
+				teacher_course_assigneds_id: '',
+				begin_date: '',
+				end_date: '',
+			},
 			errors: {
 				students: '',
 				semesters: {
@@ -278,6 +300,11 @@ export default {
 					semester: ''
 				},
 				centers: '',
+				sections: {
+					course: '',
+					begin_date: '',
+					end_date: '',
+				},
 			}
         }
     },
@@ -286,6 +313,7 @@ export default {
 		this.loadData('semesters')
 		this.loadData('careers')
 		this.loadData('centers')
+		this.loadData('teacher-courses')
 		this.loadGraphics()
 	},
 	methods: {
@@ -336,6 +364,9 @@ export default {
                         break;
                     case 'centers':
                         _this.centers = records
+                        break;
+                    case 'teacher-courses':
+                        _this.courses = records
                         break;
                     default:
                         _this.students = records
@@ -398,7 +429,8 @@ export default {
 						_this.errors.semesters.semester = 'Semestre requerido'
 					} else {
 						valid = true
-						_this.errors.semesters = ''
+						_this.errors.semesters.career = ''
+						_this.errors.semesters.semester = ''
 						_this.data = _this.semester
 					}
                     break;
@@ -409,6 +441,21 @@ export default {
 						valid = true
 						_this.errors.centers = ''
 						_this.data = _this.center
+					}
+                    break;
+				case 'section':
+					if (!_this.section.begin_date) {
+						_this.errors.sections.begin_date = 'Fecha Inicio requerida'
+					} else if (!_this.section.end_date) {
+						_this.errors.sections.end_date = 'Fecha Fin requerida'
+					} else if (!_this.section.teacher_course_assigneds_id) {
+						_this.errors.sections.course = 'Curso requerido'
+					} else {
+						valid = true
+						_this.errors.sections.begin_date = ''
+						_this.errors.sections.end_date = ''
+						_this.errors.sections.course = ''
+						_this.data = _this.section
 					}
                     break;
                 default:
@@ -435,6 +482,10 @@ export default {
 						case 'center':
 							_this.labels.center = records.careers
 							_this.values.center = records.attendances
+							break;
+						case 'section':
+							_this.labels.section = records.dates
+							_this.values.section = records.attendances
 							break;
 						default:
 							_this.students = records
