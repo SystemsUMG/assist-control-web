@@ -10,12 +10,12 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement,
 export default {
     components: { Line },
     props: ['labels', 'values'],
-    data() {
-        return {
-            chartData: {
+    computed: {
+        chartData() {
+            return {
                 labels: this.labels,
                 datasets: [{
-                    label: "Usuarios",
+                    label: "Asistencias",
                     tension: 0.4,
                     borderWidth: 0,
                     pointRadius: 0,
@@ -35,8 +35,10 @@ export default {
                     data: this.values,
                     maxBarThickness: 6
                 }]
-            },
-            chartOptions: {
+            }
+        },
+        chartOptions() {
+            return {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -58,9 +60,11 @@ export default {
                             borderDash: [5, 5]
                         },
                         ticks: {
+                            suggestedMin: 0,
                             display: true,
+                            beginAtZero: true,
                             padding: 10,
-                            color: '#fbfbfb',
+                            color: '#67748E',
                             font: {
                                 size: 11,
                                 family: "Open Sans",
