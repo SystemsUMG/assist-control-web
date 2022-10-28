@@ -53,7 +53,7 @@
         	<li class="nav-item">
 				<router-link class="nav-link " :to="{ name: 'Schedules' }">
 					<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-						<i class="ni ni-book-bookmark text-info text-sm opacity-10"></i>
+						<i class="fa fa-calendar text-info text-sm opacity-10"></i>
 					</div>
 					<span class="nav-link-text ms-1">Horarios</span>
 				</router-link>
@@ -77,7 +77,7 @@
 			<li class="nav-item">
 				  <router-link class="nav-link " :to="{ name: 'Teachers' }">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							  <i class="ni ni-single-02 text-secondary text-sm opacity-10"></i>
+							  <i class="fa fa-users text-secondary text-sm opacity-10"></i>
 						</div>
 						<span class="nav-link-text ms-1">Profesores</span>
 				  </router-link>
@@ -85,7 +85,7 @@
             <li class="nav-item">
                 <router-link class="nav-link " :to="{ name: 'TeachersAssigned' }">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-02 text-success text-sm opacity-10"></i>
+                        <i class="fa fa-user-plus text-success text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Asignación de Profesores</span>
                 </router-link>
@@ -93,7 +93,7 @@
             <li class="nav-item">
                 <router-link class="nav-link " :to="{ name: 'StudentAssigned' }">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-02 text-danger text-sm opacity-10"></i>
+                        <i class="ni ni-book-bookmark text-danger text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Asignación de Estudiantes</span>
                 </router-link>
