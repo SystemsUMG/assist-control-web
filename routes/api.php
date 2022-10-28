@@ -63,6 +63,6 @@ Route::name('api.')
             Route::any('graphics', [DashboardController::class, 'index']);
             Route::any('student', [DashboardController::class, 'reportStudent']);
             Route::any('semester', [DashboardController::class, 'reportSemester']);
-            Route::any('career', [DashboardController::class, 'reportCareer']);
+            Route::any('center', [DashboardController::class, 'reportCenter']);
         });
     });
