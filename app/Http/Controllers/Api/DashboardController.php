@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\StudentAttendanceData;
 use App\Models\StudentCourseAssigned;
 use App\Models\TeacherCourseAssigned;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -45,17 +46,11 @@ class DashboardController extends ResponseController
             $array_date = [];
             $array_attendances  = [];
             $attendances = StudentAttendanceData::whereRelation('student_course_assigned', 'student_id', $request->student_id)->get();
-            $dates = $attendances->unique('created_at');
-            foreach ($dates as $date) {
-                $array_date[] = Carbon::parse( $date->created_at)->format('d/m/Y');
-                $array_attendances[] = $attendances->where('created_at', $date->created_at)->count();
-            }
-            $this->records['dates'] = $array_date;
-            $this->records['attendances'] = $array_attendances;
+            $this->extracted($attendances, $array_date, $array_attendances);
             $this->result = true;
             $this->statusCode = 200;
             $this->message = "Registros consultados exitosamente.";
-        } catch(\Exception $exception) {
+        } catch(Exception $exception) {
             $this->message = $exception->getMessage();
         }
         return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
@@ -82,7 +77,7 @@ class DashboardController extends ResponseController
             $this->result = true;
             $this->statusCode = 200;
             $this->message = "Registros consultados exitosamente.";
-        } catch(\Exception $exception) {
+        } catch(Exception $exception) {
             $this->message = $exception->getMessage();
         }
         return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
@@ -112,9 +107,50 @@ class DashboardController extends ResponseController
             $this->result = true;
             $this->statusCode = 200;
             $this->message = "Registros consultados exitosamente.";
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->message = $exception->getMessage();
         }
         return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
+    }
+
+    public function reportSection(Request $request) {
+        try {
+            $request->validate([
+                'begin_date' => ['required', 'date_format:Y-m-d'],
+                'end_date' => ['required', 'date_format:Y-m-d'],
+                'teacher_course_assigneds_id' => ['required', 'exists:teacher_course_assigneds,id'],
+            ]);
+            $array_date = [];
+            $array_attendances  = [];
+            $begin_date = $request->begin_date.' 00:00:00';
+            $end_date = $request->end_date.' 23:59:59';
+            $course = $request->teacher_course_assigneds_id;
+            $attendances = StudentAttendanceData::whereBetween('schedule_register', [$begin_date, $end_date])
+                ->whereRelation('student_course_assigned', 'teacher_course_assigned_id', $course)->get();
+            $this->extracted($attendances, $array_date, $array_attendances);
+            $this->result = true;
+            $this->statusCode = 200;
+            $this->message = "Registros consultados exitosamente.";
+        } catch(Exception $exception) {
+            $this->message = $exception->getMessage();
+        }
+        return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
+    }
+
+    /**
+     * @param $attendances
+     * @param array $array_date
+     * @param array $array_attendances
+     * @return void
+     */
+    public function extracted($attendances, array $array_date, array $array_attendances): void
+    {
+        $dates = $attendances->unique('created_at');
+        foreach ($dates as $date) {
+            $array_date[] = Carbon::parse($date->created_at)->format('d/m/Y');
+            $array_attendances[] = $attendances->where('created_at', $date->created_at)->count();
+        }
+        $this->records['dates'] = $array_date;
+        $this->records['attendances'] = $array_attendances;
     }
 }
