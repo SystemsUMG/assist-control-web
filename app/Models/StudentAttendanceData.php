@@ -15,15 +15,12 @@ class StudentAttendanceData extends Model
         'observations',
     ];
 
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['updated_at'];
+
+    protected $dateFormat = 'Y-m-d';
 
     public function student_course_assigned()
     {
         return $this->hasOne(StudentCourseAssigned::class, 'id', 'student_course_assigned_id');
-    }
-
-    public function attendance_data()
-    {
-        return $this->hasOne(AttendanceData::class, 'attendance_data_id', 'id');
     }
 }

@@ -11,6 +11,7 @@ import Semesters from "./pages/semesters/Index.vue";
 import Students from "./pages/students/Index.vue";
 import Teachers from "./pages/teachers/Index.vue";
 import TeachersAssigned from "./pages/teacher-assigned/Index.vue";
+import StudentAssigned from "./pages/student-assigned/Index.vue";
 import NotFound from "./pages/NotFound.vue";
 
 const routes = [
@@ -73,6 +74,11 @@ const routes = [
         path: "/asignacion-profesores",
         name: "TeachersAssigned",
         component: TeachersAssigned
+    },
+    {
+        path: "/asignacion-estudiantes",
+        name: "StudentAssigned",
+        component: StudentAssigned
     },
     {
         path: "/:catchAll(.*)",

@@ -59,5 +59,6 @@ Route::name('api.')
         Route::get('student-courses-list/{id_student}',  [StudentCourseController::class, 'studentCourses']);
         Route::get('percentages/{id_student}',  [StudentCourseController::class, 'percentage']);
         Route::get('graphics', [DashboardController::class, 'index']);
+        Route::get('statistics-student/{student_id}', [DashboardController::class, 'reportStudent']);
         Route::post('logout', [AuthController::class, 'logout']);
     });
