@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
 
 class DashboardController extends ResponseController
 {
-    public function index () {
+    public function totals() {
 
         $this->records = [
             'students' => Student::count(),

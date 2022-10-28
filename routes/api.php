@@ -60,7 +60,7 @@ Route::name('api.')
         Route::get('percentages/{id_student}',  [StudentCourseController::class, 'percentage']);
         Route::post('logout', [AuthController::class, 'logout']);
         Route::group(['prefix' => 'statistics/'], function () {
-            Route::any('graphics', [DashboardController::class, 'index']);
+            Route::any('totals', [DashboardController::class, 'totals']);
             Route::any('student', [DashboardController::class, 'reportStudent']);
             Route::any('semester', [DashboardController::class, 'reportSemester']);
             Route::any('center', [DashboardController::class, 'reportCenter']);
