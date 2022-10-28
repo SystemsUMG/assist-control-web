@@ -12,11 +12,12 @@
     		</div>
     		<div class="card-body pt-0">
         		<div class="text-center mt-4">
-            		<h5>{{ user.name }}<span class="font-weight-light">, {{ user.age }} años</span></h5>
+                    <span class="badge bg-primary" v-if="user.active == '1'">Activo</span>
+                    <span class="badge bg-danger" v-else>Inactivo</span>
+            		<h5 class="mt-4">{{ user.name }}</h5>
 					<h6 class="font-weight-300">{{ user.email }}</h6>
-					<h6 class="font-weight-300">{{ user.rol_id }} - {{ user.department_id }}</h6>
-					<p class="mt-4 mb-0">{{ user.address }}</p>
-					<h6>{{ user.region_id }}, {{ user.country_id }}</h6>
+					<p class="mt-2 mb-0">{{ user.address }}</p>
+					<h6>Teléfono: {{ user.phone }}</h6>
         		</div>
     		</div>
 		</div>
@@ -33,14 +34,11 @@ export default {
 			id: '',
 			user: {
 				name: '',
+				last_name: '',
 				email: '',
-				password: '',
-				age: '',
 				address: '',
-				region_id: '',
-				rol_id: '',
-				department_id: '',
-				country_id: ''
+				phone: '',
+				active: '' 
 			},
 			roles: [],
             departments: [],
@@ -49,10 +47,6 @@ export default {
 		}
 	},
 	mounted() {
-		this.loadData('rols')
-    	this.loadData('departments')
-        this.loadData('regions')
-        this.loadData('countries')
 		this.loadUser()
 	},
 	methods:{
@@ -85,37 +79,6 @@ export default {
 				this.loader.hide()
 			}
 		},
-		loadData(url = '') {
-            let _this = this
-            axios({url: url , method: 'GET'})
-			.then((resp) => {
-			    if(resp.data.records.length > 0) {
-                    let records = resp.data.records
-                    switch(url) {
-                    case 'rols':
-                        _this.roles = records
-                        break;
-                    case 'departments':
-                        _this.departments = records
-                        break;
-                    case 'regions':
-                        _this.regions = records
-                        break;
-                    case 'countries':
-                        _this.countries = records
-                        break;
-                    default:
-                        _this.roles = records
-                    }
-				} else {
-					_this.icon = 'error'
-					_this.message = 'No existen ' + url + ' registrados'
-					_this.showToast(_this.icon, _this.message)
-				}
-			}).catch((err) => {
-				_this.showToast(_this.icon)
-			})
-        },
 		loadUser() {
 			let _this = this
 			_this.showLoader(true)
@@ -123,15 +86,10 @@ export default {
 			_this.id = localStorage.getItem('user')
 			setTimeout(
 				function() {
-					axios({url: '/users/' + _this.id, method: 'GET'})
+					axios({url: '/teachers/' + _this.id, method: 'GET'})
 					.then((resp) => {
 						if(resp.data.result) {
-							let user = resp.data.records
-							user.rol_id = _this.foundData(_this.roles, user.rol_id)
-							user.department_id = _this.foundData(_this.departments, user.department_id)
-							user.region_id = _this.foundData(_this.regions, user.region_id)
-							user.country_id = _this.foundData(_this.countries, user.country_id)
-							_this.user = user
+							_this.user = resp.data.records
 							_this.icon = 'success'
 							_this.message = resp.data.message
 						} else {
@@ -147,16 +105,7 @@ export default {
 				},
 				300
 			)
-        },
-		foundData(data = [], element) {
-			let property = ''
-			data.forEach(function(item) {
-				if (item.id == element) {
-					property = item.name
-				}
-			})
-			return property
-		}
+        }
 	}
 }
 </script>

@@ -1,12 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "./pages/auth/Login.vue";
 import Home from "./pages/Home.vue";
-import Users from "./pages/users/Index.vue";
 import Profile from "./pages/profile/Profile.vue";
-import Countries from "./pages/countries/Index.vue";
-import Departments from "./pages/departments/Index.vue";
-import Regions from "./pages/regions/Index.vue";
-import Roles from "./pages/roles/Index.vue";
+import Centers from "./pages/centers/Index.vue";
+import Careers from "./pages/careers/Index.vue";
+import Courses from "./pages/courses/Index.vue";
+import Sections from "./pages/sections/Index.vue";
+import Schedules from "./pages/schedules/Index.vue";
+import Semesters from "./pages/semesters/Index.vue";
+import Students from "./pages/students/Index.vue";
+import Teachers from "./pages/teachers/Index.vue";
+import TeachersAssigned from "./pages/teacher-assigned/Index.vue";
+import StudentAssigned from "./pages/student-assigned/Index.vue";
 import NotFound from "./pages/NotFound.vue";
 
 const routes = [
@@ -21,34 +26,59 @@ const routes = [
         component: Home
     },
     {
-        path: "/usuarios",
-        name: "Users",
-        component: Users
-    },
-    {
         path: "/perfil",
         name: "Profile",
         component: Profile
     },
     {
-        path: "/paises",
-        name: "Countries",
-        component: Countries
+        path: "/centros",
+        name: "Centers",
+        component: Centers
     },
     {
-        path: "/departamentos",
-        name: "Departments",
-        component: Departments
+        path: "/carreras",
+        name: "Careers",
+        component: Careers
     },
     {
-        path: "/regiones",
-        name: "Regions",
-        component: Regions
+        path: "/cursos",
+        name: "Courses",
+        component: Courses
     },
     {
-        path: "/roles",
-        name: "Roles",
-        component: Roles
+        path: "/secciones",
+        name: "Sections",
+        component: Sections
+    },
+    {
+        path: "/horarios",
+        name: "Schedules",
+        component: Schedules
+    },
+    {
+        path: "/semestres",
+        name: "Semesters",
+        component: Semesters
+    },
+    {
+        path: "/estudiantes",
+        name: "Students",
+        component: Students
+    },
+    {
+        path: "/profesores",
+        name: "Teachers",
+        component: Teachers
+    },
+    {
+        path: "/asignacion-profesores",
+        name: "TeachersAssigned",
+        component: TeachersAssigned
+    },
+    {
+        path: "/asignacion-estudiantes",
+        name: "StudentAssigned",
+        component: StudentAssigned
     },
     {
         path: "/:catchAll(.*)",
