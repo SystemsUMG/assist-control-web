@@ -6,13 +6,13 @@
               		<div class="row">
                 		<div class="col-8">
 							<div class="numbers">
-								<p class="text-sm mb-0 text-uppercase font-weight-bold">Usuarios</p>
-								<h5 class="font-weight-bolder">{{ totals.total_users }}</h5>
+								<p class="text-sm mb-0 text-uppercase font-weight-bold">Estudiantes</p>
+								<h5 class="font-weight-bolder">{{ totals.students }}</h5>
 							</div>
                 		</div>
                 		<div class="col-4 text-end">
                   			<div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                    			<i class="ni ni-single-02 text-lg opacity-10" aria-hidden="true"></i>
+                    			<i class="ni ni-badge text-lg opacity-10" aria-hidden="true"></i>
                   			</div>
                 		</div>
               		</div>
@@ -25,13 +25,13 @@
               		<div class="row">
                 		<div class="col-8">
                   			<div class="numbers">
-                    			<p class="text-sm mb-0 text-uppercase font-weight-bold">Países</p>
-                    			<h5 class="font-weight-bolder">{{ totals.total_countries }}</h5>
+                    			<p class="text-sm mb-0 text-uppercase font-weight-bold">Profesores</p>
+                    			<h5 class="font-weight-bolder">{{ totals.teachers }}</h5>
                   			</div>
                 		</div>
                 		<div class="col-4 text-end">
                   			<div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
-                    			<i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                    			<i class="ni ni-single-02 text-lg opacity-10" aria-hidden="true"></i>
                   			</div>
                 		</div>
               		</div>
@@ -44,13 +44,13 @@
               		<div class="row">
               		  	<div class="col-8">
               		    	<div class="numbers">
-              		      		<p class="text-sm mb-0 text-uppercase font-weight-bold">Departamentos</p>
-              		      		<h5 class="font-weight-bolder">{{ totals.total_departments }}</h5>
+              		      		<p class="text-sm mb-0 text-uppercase font-weight-bold">Carreras</p>
+              		      		<h5 class="font-weight-bolder">{{ totals.careers }}</h5>
               		    	</div>
               		  	</div>
               			<div class="col-4 text-end">
 							<div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-								<i class="ni ni-square-pin text-lg opacity-10" aria-hidden="true"></i>
+								<i class="ni ni-building text-lg opacity-10" aria-hidden="true"></i>
 							</div>
            				</div>
         			</div>
@@ -63,13 +63,13 @@
           	  	  	<div class="row">
           	  	  	  	<div class="col-8">
           	  	  	  	  	<div class="numbers">
-          	  	  	  	  	  	<p class="text-sm mb-0 text-uppercase font-weight-bold">Regiones</p>
-          	  	  	  	  	  	<h5 class="font-weight-bolder">{{ totals.total_departments }}</h5>
+          	  	  	  	  	  	<p class="text-sm mb-0 text-uppercase font-weight-bold">Centros</p>
+          	  	  	  	  	  	<h5 class="font-weight-bolder">{{ totals.centers }}</h5>
           	  	  	  	  	</div>
           	  	  	  	</div>
           	  	  	  	<div class="col-4 text-end">
           	  	  	  	  	<div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-          	  	  	  	    	<i class="ni ni-world-2 text-lg opacity-10" aria-hidden="true"></i>
+          	  	  	  	    	<i class="ni ni-square-pin text-lg opacity-10" aria-hidden="true"></i>
           	  	  	  	  	</div>
           	  	  	  	</div>
           	  	  	</div>
@@ -257,7 +257,7 @@ export default {
 		return {
 			icon: '',
             message: '',
-            totals: '',
+            totals: {},
             loader: {},
 			show: false,
 			data: {},
@@ -314,7 +314,7 @@ export default {
 		this.loadData('careers')
 		this.loadData('centers')
 		this.loadData('teacher-courses')
-		this.loadGraphics()
+		this.loadTotals()
 	},
 	methods: {
 		showToast(icon = "error", message = "Ocurrió un error, por favor vuelva a intentar") {
@@ -380,18 +380,16 @@ export default {
 				_this.showToast(_this.icon)
 			})
         },
-        loadGraphics(){
+        loadTotals(){
 			let _this = this
 			_this.showLoader(true)
 
 			setTimeout(
 				function() {
-					axios({url: 'statistics/graphics' , method: 'GET'})
+					axios({url: 'statistics/totals' , method: 'GET'})
 					.then((resp) => {
-						if(resp.data.records.countries.length > 0) {
-							// _this.labels = resp.data.records.countries
-							// _this.values = resp.data.records.users_real
-							_this.totals = resp.data.records.totals
+						if(resp.data.records.result > 0) {
+							_this.totals = resp.data.records
 							_this.show = true
 							_this.icon = 'success'
 							_this.message = resp.data.message
