@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Response\ResponseController;
 use App\Models\Career;
+use App\Models\Center;
 use App\Models\Course;
+use App\Models\Student;
 use App\Models\StudentAttendanceData;
 use App\Models\StudentCourseAssigned;
+use App\Models\Teacher;
 use App\Models\TeacherCourseAssigned;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,29 +18,17 @@ use Illuminate\Support\Carbon;
 
 class DashboardController extends ResponseController
 {
-    public function index () {
-        $careers = Career::all();
+    public function totals() {
 
-        $array_countries = [];
-        $array_users  = [];
-        foreach ($careers as $career) {
-            $array_countries[] = $career->name;
-            $array_users [] = Career::count();
-        }
-        $this->records['countries'] = $array_countries;
-        $this->records['users_real'] = $array_users;
-        $this->records['totals'] = [
-            'total_users' => Career::count(),
-            'total_countries' => Career::count(),
-            'total_regions' => Career::count(),
-            'total_departments' => Career::count(),
-            'total_rols' => Career::count(),
+        $this->records = [
+            'students' => Student::count(),
+            'teachers' => Teacher::count(),
+            'careers' => Career::count(),
+            'centers' => Center::count(),
         ];
-
         $this->result = true;
         $this->statusCode = 200;
         $this->message = "Registros consultados exitosamente.";
-
         return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
     }
 
