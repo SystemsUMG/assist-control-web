@@ -26,7 +26,7 @@
                                     <small class="invalid-feedback">{{ errors.address ? errors.address[0] : '' }}</small>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="careers_assignments" class="form-control-label">Carreras</label>
                                     <Multiselect id="careers_assignments" v-model="data.careers_assignments" :options="careers" mode="tags" :searchable="true" :close-on-select="false" :object="true" :class="errors.careers_assignments ? 'is-invalid' : ''"/>
