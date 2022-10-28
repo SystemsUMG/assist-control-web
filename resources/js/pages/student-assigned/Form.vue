@@ -139,7 +139,7 @@ export default {
             _this.loadData('sections')
             _this.loadData('schedules')
             if(_this.method == 'PUT') {
-                axios({url: '/teacher-courses/' + _this.id, method: 'GET' })
+                axios({url: '/student-courses/' + _this.id, method: 'GET' })
                     .then((resp) => {
                         if (resp.data.result) {
                             _this.data = resp.data.records

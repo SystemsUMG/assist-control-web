@@ -5,7 +5,7 @@
                 <div class="card-header pb-0">
                     <div class="row">
                         <div class="col">
-                            <h6>Tabla de Asignaciones de Profesores</h6>
+                            <h6>Tabla de Asignaciones de Estudiantes</h6>
                         </div>
                         <div class="col text-end">
                             <button type="button" @click="OPEN('POST')" class="btn btn-dark btn-sm mb-3">Crear Asignación</button>
@@ -17,45 +17,45 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                             <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Profesor</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Carnet</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Centro</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Carrera</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Semestre</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Carrera</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Acciones</th>
                             </tr>
                             </thead>
                             <tbody v-if="show">
-                            <tr v-for="teacher_course in teachers_courses" :key="teacher_course.id">
+                            <tr v-for="student_course in students_courses" :key="student_course.id">
                                 <td>
                                     <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ teacher_course.teacher.name + ' ' + teacher_course.teacher.last_name }}</span>
+                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.student.name + ' ' + student_course.student.last_name }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ teacher_course.course.name + ' - ' + teacher_course.section.letter }}</span>
+                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.student.carnet }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ teacher_course.career_assigned.center.name }}</span>
+                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.teacher_courses_assigned.career_assigned.career.name + ' - ' + student_course.teacher_courses_assigned.section.letter}}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ teacher_course.career_assigned.career.name }}</span>
+                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.teacher_courses_assigned.semester.number + ' - ' + student_course.teacher_courses_assigned.semester.year }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ teacher_course.semester.number+ ' - ' + teacher_course.semester.year}}</span>
+                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.teacher_courses_assigned.career_assigned.career.name}}</span>
                                     </div>
                                 </td>
                                 <td class="align-middle">
-                                    <a  class="text-success font-weight-bold text-xs cursor-pointer"  @click="OPEN('PUT', teacher_course.id)">Editar</a>
+                                    <a  class="text-success font-weight-bold text-xs cursor-pointer"  @click="OPEN('PUT', student_course.id)">Editar</a>
                                     &nbsp;
-                                    <a class="text-danger font-weight-bold text-xs cursor-pointer" @click="OPEN('DELETE', teacher_course.id)">Eliminar</a>
+                                    <a class="text-danger font-weight-bold text-xs cursor-pointer" @click="OPEN('DELETE', student_course.id)">Eliminar</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -83,7 +83,7 @@ export default {
     components: { DataForm, DataDelete },
     data() {
         return {
-            teachers_courses: [],
+            students_courses: [],
             icon: '',
             message: '',
             loader: {},
@@ -136,11 +136,11 @@ export default {
 
             setTimeout(
                 function() {
-                    axios({url: 'teacher-courses' , method: 'GET'})
+                    axios({url: 'student-courses' , method: 'GET'})
                         .then((resp) => {
                             if(resp.data.records.length > 0) {
                                 _this.show = true
-                                _this.teachers_courses = resp.data.records
+                                _this.students_courses = resp.data.records
                                 _this.icon = 'success'
                                 _this.message = resp.data.message
                             } else {
