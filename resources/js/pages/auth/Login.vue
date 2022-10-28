@@ -28,8 +28,8 @@
 						<div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
 							<div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg'); background-size: cover;">
 								<span class="mask bg-gradient-primary opacity-6"></span>
-								<h4 class="mt-5 text-white font-weight-bolder position-relative">Sistema de Control de Personal</h4>
-								<p class="text-white position-relative">Gestiona a los empleados y administra información de personal.</p>
+								<h4 class="mt-5 text-white font-weight-bolder position-relative">Sistema de Control de Asistencia</h4>
+								<p class="text-white position-relative">Gestiona las asistencias de los estudiantes y administra información de cursos.</p>
 							</div>
 						</div>
 					</div>
@@ -92,12 +92,19 @@ export default {
                 axios({url: '/login', method: 'POST', data: this.data })
                 .then((resp) => {
 					if(resp.data.result) {
-						const token = resp.data.records.token
-						const user = resp.data.records.user_id
-                        localStorage.setItem('token', token)
-                        localStorage.setItem('user', user)
-						this.$router.push({ name: 'Home' })
-						window.location.reload('/')
+						const records = resp.data.records
+						if(records.type == 'teacher') {
+							const token = records.token
+							const user = records.user_id 
+							localStorage.setItem('token', token)
+							localStorage.setItem('user', user)
+							this.$router.push({ name: 'Home' })
+							window.location.reload('/')
+						} else {
+							_this.icon = 'error'
+							_this.message = 'No eres profesor, usa la aplicación para registrar asistencia'
+							_this.showToast(_this.icon, _this.message)
+						}
 					} else {
                         _this.icon = 'error'
 						_this.message = resp.data.message

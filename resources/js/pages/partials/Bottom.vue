@@ -6,7 +6,7 @@
 				<div class="col-lg-6 mb-lg-0 mb-4">
 					<div class="copyright text-center text-sm text-light text-lg-start">
 					Desarrollado por
-					<span class="font-weight-bold text-dark">Grupo 8</span>
+					<a class="font-weight-bold text-dark" href="https://github.com/SystemsUMG" target="_blank">Grupo 8</a>
 					Desarrollo Web
 					</div>
 				</div>
