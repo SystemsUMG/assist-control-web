@@ -1,5 +1,5 @@
 <template>
-    <Bar :chart-options="chartData" :chart-data="chartOptions"/>
+    <Bar :chart-options="chartOptions" :chart-data="chartData"/>
 </template>
 <script>
 import { Bar } from 'vue-chartjs'

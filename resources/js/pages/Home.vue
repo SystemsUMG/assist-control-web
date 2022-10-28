@@ -100,14 +100,14 @@
                         </div>
 					</div>
                     <hr class="dark horizontal">
-                    <div class="d-flex ">
+                    <div class="d-flex justify-content-center ">
                     	<p class="mb-0 text-sm">Asistencia de Estudiantes por Fecha</p>
                 	</div>
             	</div>
             	<div class="card-body p-3">
 					<div class="border-radius-lg py-3 pe-1">
                     	<div class="chart">
-                            <line-chart :labels="labels.student" :values="values.student" v-if="show" style="height: 170px"/>
+                            <line-chart :labels="labels.student" :values="values.student" v-if="show" style="height: 250px"/>
                 		</div>
                     </div>
             	</div>
@@ -149,8 +149,8 @@
                         </div>
 					</div>
                     <hr class="dark horizontal">
-                    <div class="d-flex ">
-                    	<p class="mb-0 text-sm">Asistencia por Curso</p>
+                    <div class="d-flex justify-content-center ">
+                    	<p class="mb-0 text-sm">Asistencia por Fecha y Curso</p>
                 	</div>
             	</div>
             	<div class="card-body p-3">
@@ -196,14 +196,14 @@
                         </div>
 					</div>
                     <hr class="dark horizontal">
-                    <div class="d-flex ">
-                    	<p class="mb-0 text-sm">Asistencia de Carreras por Semestre</p>
+                    <div class="d-flex justify-content-center ">
+                    	<p class="mb-0 text-sm">Asistencia de Curso por Carrera y Semestre</p>
                 	</div>
             	</div>
             	<div class="card-body p-3">
 					<div class="border-radius-lg py-3 pe-1">
                     	<div class="chart">
-                            <line-chart :labels="labels.semester" :values="values.semester" v-if="show" style="height: 170px"/>
+                            <line-chart :labels="labels.semester" :values="values.semester" v-if="show" style="height: 250px"/>
                 		</div>
                     </div>
             	</div>
@@ -231,14 +231,14 @@
                         </div>
 					</div>
                     <hr class="dark horizontal">
-                    <div class="d-flex ">
-                    	<p class="mb-0 text-sm">Asistencia por Centro</p>
+                    <div class="d-flex justify-content-center ">
+                    	<p class="mb-0 text-sm">Asistencia de Carrera por Centro</p>
                 	</div>
             	</div>
             	<div class="card-body p-3">
 					<div class="border-radius-lg py-3 pe-1">
                     	<div class="chart">
-                            <line-chart :labels="labels.center" :values="values.center" v-if="show" style="height: 170px"/>
+                            <line-chart :labels="labels.center" :values="values.center" v-if="show" style="height: 250px"/>
                 		</div>
                     </div>
             	</div>
@@ -465,7 +465,6 @@ export default {
 
 			if (valid) {
 				let form = _this.addFormData(_this.data)
-				console.log(form)
 				axios({url: 'statistics/' + url , method: 'POST', data: form})
 				.then((resp) => {
 					if(resp.data.result > 0) {
