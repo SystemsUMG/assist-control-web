@@ -388,7 +388,7 @@ export default {
 				function() {
 					axios({url: 'statistics/totals' , method: 'GET'})
 					.then((resp) => {
-						if(resp.data.records.result > 0) {
+						if(resp.data.result) {
 							_this.totals = resp.data.records
 							_this.show = true
 							_this.icon = 'success'
