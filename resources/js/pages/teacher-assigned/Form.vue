@@ -16,7 +16,7 @@
                                 <div class="form-group">
                                     <label for="career_assigned_id" class="form-control-label">Carrera</label>
                                     <select  id="career_assigned_id" class="form-select" @change="loadCourses($event)" v-model="data.career_assigned_id" :class="errors.career_assigned_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
+                                        <option value="" disabled hidden></option>
                                         <option v-for="assigned_career in assigned_careers" :value="assigned_career.id" :key="assigned_career.id">{{ assigned_career.career_name + ' - ' + assigned_career.center_name }}</option>
                                     </select>
                                     <small class="invalid-feedback">{{ errors.career_assigned_id ? errors.career_assigned_id[0] : '' }}</small>
@@ -26,7 +26,7 @@
                                 <div class="form-group">
                                     <label for="career_assigned_id" class="form-control-label">Profesor</label>
                                     <select  id="teachers" class="form-select" v-model="data.teacher_id" :class="errors.teacher_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
+                                        <option value="" disabled hidden></option>
                                         <option v-for="teacher in teachers" :value="teacher.id" :key="teacher.id">{{ teacher.name + ' - ' + teacher.last_name }}</option>
                                     </select>
                                     <small class="invalid-feedback">{{ errors.teacher_id ? errors.teacher_id[0] : '' }}</small>
@@ -36,7 +36,7 @@
                                 <div class="form-group">
                                     <label for="career_assigned_id" class="form-control-label">Curso</label>
                                     <select  id="courses" class="form-select" v-model="data.course_id" :class="errors.course_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
+                                        <option value="" disabled hidden></option>
                                         <option v-for="course in courses" :value="course.id" :key="course.id">{{ course.name }}</option>
                                     </select>
                                     <small class="invalid-feedback">{{ errors.course_id ? errors.course_id[0] : '' }}</small>
@@ -46,7 +46,7 @@
                                 <div class="form-group">
                                     <label for="career_assigned_id" class="form-control-label">Semestre</label>
                                     <select  id="semesters" class="form-select" v-model="data.semester_id" :class="errors.semester_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
+                                        <option value="" disabled hidden></option>
                                         <option v-for="semester in semesters" :value="semester.id" :key="semester.id">{{ semester.number +'-'+ semester.year}}</option>
                                     </select>
                                     <small class="invalid-feedback">{{ errors.semester_id ? errors.semester_id[0] : '' }}</small>
@@ -56,7 +56,7 @@
                                 <div class="form-group">
                                     <label for="career_assigned_id" class="form-control-label">Sección</label>
                                     <select  id="sections" class="form-select" v-model="data.section_id" :class="errors.section_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
+                                        <option value="" disabled hidden></option>
                                         <option v-for="section in sections" :value="section.id" :key="section.id">{{ section.letter }}</option>
                                     </select>
                                     <small class="invalid-feedback">{{ errors.section_id ? errors.section_id[0] : '' }}</small>
@@ -66,7 +66,7 @@
                                 <div class="form-group">
                                     <label for="career_assigned_id" class="form-control-label">Horario</label>
                                     <select  id="schedules" class="form-select" v-model="data.schedule_id" :class="errors.schedule_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
+                                        <option value="" disabled hidden></option>
                                         <option v-for="schedule in schedules" :value="schedule.id" :key="schedule.id">{{ schedule.begin_hour +' - '+ schedule.end_hour }}</option>
                                     </select>
                                     <small class="invalid-feedback">{{ errors.schedule_id ? errors.schedule_id[0] : '' }}</small>
@@ -143,12 +143,15 @@ export default {
                     .then((resp) => {
                         if (resp.data.result) {
                             _this.data = resp.data.records
+                            let career_id = resp.data.records.career_assigned.career_id
+                            _this.loadCourses('courses-list', career_id)
                         } else {
                             _this.showToast('error', resp.data.message)
                             _this.CLOSE()
                         }
                     })
                     .catch((err) => {
+                        console.log(err)
                         _this.CLOSE()
                         _this.showToast()
                     })
@@ -227,9 +230,10 @@ export default {
                 _this.CLOSE()
 			})
         },
-        loadCourses (event) {
+        loadCourses (event, id) {
             this.courses = []
-            this.loadData('courses-list', event.target.value)
+            let value = id ? id : event.target.value
+            this.loadData('courses-list', value)
         },
         CLOSE: function(){
             this.$emit('close')
