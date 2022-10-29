@@ -10,73 +10,23 @@
                     </div>
                     <div class="modal-body pt-0 px-4">
                         <hr class="horizontal dark"/>
-                        <p class="text-uppercase text-sm">Información del Estudiante</p>
+                        <p class="text-uppercase text-sm">Asignación de Estudiantes</p>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="career_assigned_id" class="form-control-label">Carrera</label>
-                                    <select  id="career_assigned_id" class="form-select" @change="loadCourses($event)" v-model="data.career_assigned_id" :class="errors.career_assigned_id ? 'is-invalid' : ''">
+                                    <label for="teacher_course" class="form-control-label">Curso</label>
+                                    <select  id="teacher_course" class="form-select" v-model="data.teacher_course_assigned_id" :class="errors.teacher_course_assigned_id ? 'is-invalid' : ''" :disabled="method == 'PUT'">
                                         <option value="" disabled hidden>Seleccione una opción</option>
-                                        <option v-for="assigned_career in assigned_careers" :value="assigned_career.id" :key="assigned_career.id">{{ assigned_career.career_name + ' - ' + assigned_career.center_name }}</option>
+                                        <option v-for="teacher_course in teacher_courses" :value="teacher_course.id" :key="teacher_course.id">{{ teacher_course.course.name + '-' + teacher_course.section.letter  + ' ' + teacher_course.career_assigned.center.name }}</option>
                                     </select>
-                                    <small class="invalid-feedback">{{ errors.career_assigned_id ? errors.career_assigned_id[0] : '' }}</small>
+                                    <small class="invalid-feedback">{{ errors.teacher_course_assigned_id ? errors.teacher_course_assigned_id[0] : '' }}</small>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="career_assigned_id" class="form-control-label">Profesor</label>
-                                    <select  id="teachers" class="form-select" v-model="data.teacher_id" :class="errors.teacher_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
-                                        <option v-for="teacher in teachers" :value="teacher.id" :key="teacher.id">{{ teacher.name + ' - ' + teacher.last_name }}</option>
-                                    </select>
-                                    <small class="invalid-feedback">{{ errors.teacher_id ? errors.teacher_id[0] : '' }}</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="career_assigned_id" class="form-control-label">Curso</label>
-                                    <select  id="courses" class="form-select" v-model="data.course_id" :class="errors.course_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
-                                        <option v-for="course in courses" :value="course.id" :key="course.id">{{ course.name }}</option>
-                                    </select>
-                                    <small class="invalid-feedback">{{ errors.course_id ? errors.course_id[0] : '' }}</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="career_assigned_id" class="form-control-label">Semestre</label>
-                                    <select  id="semesters" class="form-select" v-model="data.semester_id" :class="errors.semester_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
-                                        <option v-for="semester in semesters" :value="semester.id" :key="semester.id">{{ semester.number +'-'+ semester.year}}</option>
-                                    </select>
-                                    <small class="invalid-feedback">{{ errors.semester_id ? errors.semester_id[0] : '' }}</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="career_assigned_id" class="form-control-label">Sección</label>
-                                    <select  id="sections" class="form-select" v-model="data.section_id" :class="errors.section_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
-                                        <option v-for="section in sections" :value="section.id" :key="section.id">{{ section.letter }}</option>
-                                    </select>
-                                    <small class="invalid-feedback">{{ errors.section_id ? errors.section_id[0] : '' }}</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="career_assigned_id" class="form-control-label">Horario</label>
-                                    <select  id="schedules" class="form-select" v-model="data.schedule_id" :class="errors.schedule_id ? 'is-invalid' : ''">
-                                        <option value="" disabled hidden>Seleccione una opción</option>
-                                        <option v-for="schedule in schedules" :value="schedule.id" :key="schedule.id">{{ schedule.begin_hour +' - '+ schedule.end_hour }}</option>
-                                    </select>
-                                    <small class="invalid-feedback">{{ errors.schedule_id ? errors.schedule_id[0] : '' }}</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="total" class="form-control-label">Total de Asistencias</label>
-                                    <input id="total" class="form-control" type="number" v-model="data.total_assists" :class="errors.total_assists ? 'is-invalid' : ''">
-                                    <small class="invalid-feedback">{{ errors.total_assists ? errors.total_assists[0] : '' }}</small>
+                                    <label for="students" class="form-control-label">Estudiantes</label>
+                                    <Multiselect id="students" v-model="data.students_assigned" :options="students" mode="tags" :searchable="true" :close-on-select="false" :object="true" :class="errors.students_assigned ? 'is-invalid' : ''"/>
+                                    <small class="invalid-feedback">{{ errors.students_assigned ? errors.students_assigned[0] : '' }}</small>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +52,10 @@
     </div>
 </template>
 <script>
+import Multiselect from '@vueform/multiselect'
+
 export default {
+    components: { Multiselect },
     props: ['open', 'method', 'id'],
     data(){
         return {
@@ -110,39 +63,34 @@ export default {
             message: '',
             loader: {},
             data: {
-                career_assigned_id: '',
-                teacher_id: '',
-                course_id: '',
-                semester_id: '',
-                section_id: '',
-                schedule_id: '',
-                total_assists: '',
+                teacher_course_assigned_id: '',
+                students_assigned: [],
             },
             load: false,
             count: 0,
             url: '',
-            assigned_careers: [],
-            teachers: [],
-            courses: [],
-            semesters: [],
-            sections: [],
-            schedules: [],
             errors: {},
+            teacher_courses : [],
+            students: [{
+                value: '',
+                label: ''
+            }]
         }
     },
     computed: {
         OPEN: function() {
             let _this = this
-            _this.loadData('assigned-careers')
-            _this.loadData('teachers')
-            _this.loadData('semesters')
-            _this.loadData('sections')
-            _this.loadData('schedules')
+            _this.loadData('students')
+            _this.loadData('teacher-courses')
             if(_this.method == 'PUT') {
-                axios({url: '/student-courses/' + _this.id, method: 'GET' })
+                axios({url: '/teacher-courses/' + _this.id, method: 'GET' })
                     .then((resp) => {
                         if (resp.data.result) {
-                            _this.data = resp.data.records
+                            _this.data.teacher_course_assigned_id = resp.data.records.id
+                            resp.data.records.students_assigned.map(function(item, key) {
+                                let name =  item.student.carnet + ' ' + item.student.name + ' ' + item.student.last_name 
+                                _this.data.students_assigned.push({value: item.student.id, label: name})
+                            })
                         } else {
                             _this.showToast('error', resp.data.message)
                             _this.CLOSE()
@@ -193,26 +141,17 @@ export default {
 			    if(resp.data.records.length > 0) {
                     let records = resp.data.records
                     switch(url) {
-                    case 'assigned-careers':
-                        _this.assigned_careers = records
+                    case 'students':
+                        resp.data.records.map(function(item, key) {
+                            let name = item.carnet  + ' - ' + item.name  + ' ' + item.last_name
+                            _this.students.push({value: item.id, label: name })
+                        })
                         break;
-                    case 'teachers':
-                        _this.teachers = records
-                        break;
-                    case 'semesters':
-                        _this.semesters = records
-                        break;
-                    case 'sections':
-                        _this.sections = records
-                        break;
-                    case 'schedules':
-                        _this.schedules = records
-                        break;
-                    case 'courses-list':
-                        _this.courses = records
+                    case 'teacher-courses':
+                        _this.teacher_courses = resp.data.records 
                         break;
                     default:
-                        _this.assigned_careers = records
+                            _this.students = records
                     }
 					_this.icon = 'success'
 					_this.message = resp.data.message
@@ -239,13 +178,22 @@ export default {
             _this.count++
             _this.load = true
 
-            let method = _this.method == 'PUT' ? '/' + _this.data.id : ''
+            let method = _this.method == 'PUT' ? '/' + _this.id : ''
 
             if(_this.count == 1){
                 let form = new FormData()
                 $.each(this.data, function(key, item) {
                     if(item != null){
-                        form.append(key, item)
+                        //Obtener value de objeto para careers assignments
+                        if (key == "students_assigned") {
+                            let students_assigned = []
+                            item.map(function(element) {
+                                students_assigned.push(element.value)
+                            })
+                            form.append(key, students_assigned)
+                        } else {
+                            form.append(key, item)
+                        }
                     }
                 })
                 if(this.method == 'PUT'){
@@ -253,7 +201,7 @@ export default {
                 }
                 this.errors = []
                 setTimeout(function() {
-                    axios({url: '/teacher-courses' + method, method: 'POST', data: form })
+                    axios({url: '/student-courses' + method, method: 'POST', data: form })
                         .then((resp) => {
                             if(resp.data.result) {
                                 _this.icon = 'success'

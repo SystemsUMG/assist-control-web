@@ -7,62 +7,64 @@
                         <div class="col">
                             <h6>Tabla de Asignaciones de Estudiantes</h6>
                         </div>
-                        <div class="col text-end">
-                            <button type="button" @click="OPEN('POST')" class="btn btn-dark btn-sm mb-3">Crear Asignación</button>
-                        </div>
+                        <!-- <div class="col text-end">
+                            <button type="button" @click="OPEN('POST')" class="btn btn-dark btn-sm mb-3">Agregar Asignación</button>
+                        </div> -->
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
                             <thead>
-                            <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Carnet</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Semestre</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Carrera</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Acciones</th>
-                            </tr>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Carrera</th>
+                                    <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Semestre</th> -->
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Centro</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estudiantes</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Acciones</th>
+                                </tr>
                             </thead>
                             <tbody v-if="show">
-                            <tr v-for="student_course in students_courses" :key="student_course.id">
+                            <tr v-for="teacher_course in teacher_courses" :key="teacher_course.id">
                                 <td>
                                     <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.student.name + ' ' + student_course.student.last_name }}</span>
+                                        <span class="text-secondary text-xs font-weight-bold">{{ teacher_course.course.name + ' - ' + teacher_course.section.letter}}</span>
+                                    </div>
+                                </td>
+                                <!-- <td>
+                                    <div class="px-3">
+                                        <span class="text-secondary text-xs font-weight-bold">{{ teacher_course.semester.number + '-' + teacher_course.semester.year }}</span>
+                                    </div>
+                                </td> -->
+                                <td>
+                                    <div class="px-3">
+                                        <span class="text-secondary text-xs font-weight-bold">{{ teacher_course.career_assigned.career.name}}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.student.carnet }}</span>
+                                        <span class="text-secondary text-xs font-weight-bold">{{ teacher_course.career_assigned.center.name }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.teacher_courses_assigned.career_assigned.career.name + ' - ' + student_course.teacher_courses_assigned.section.letter}}</span>
+                                        <ul>
+                                            <li v-for="student_assigned in teacher_course.students_assigned" :key="student_assigned.id">
+                                                <span class="text-secondary text-xs font-weight-bold">{{ student_assigned.student.carnet + ' ' + student_assigned.student.name + ' ' + student_assigned.student.last_name}}</span>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.teacher_courses_assigned.semester.number + ' - ' + student_course.teacher_courses_assigned.semester.year }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-3">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ student_course.teacher_courses_assigned.career_assigned.career.name}}</span>
-                                    </div>
-                                </td>
-                                <td class="align-middle">
-                                    <a  class="text-success font-weight-bold text-xs cursor-pointer"  @click="OPEN('PUT', student_course.id)">Editar</a>
-                                    &nbsp;
-                                    <a class="text-danger font-weight-bold text-xs cursor-pointer" @click="OPEN('DELETE', student_course.id)">Eliminar</a>
+                                <td class="align-middle text-center">
+                                    <a  class="text-success font-weight-bold text-xs cursor-pointer"  @click="OPEN('PUT', teacher_course.id)">Asignación</a>
                                 </td>
                             </tr>
                             </tbody>
                             <tbody v-else>
                             <tr>
                                 <td class="text-center py-5" colspan="6">
-                                    <p>No hay estudiantes registrados</p>
+                                    <p>No hay asignaciones registradas</p>
                                 </td>
                             </tr>
                             </tbody>
@@ -83,7 +85,7 @@ export default {
     components: { DataForm, DataDelete },
     data() {
         return {
-            students_courses: [],
+            teacher_courses: [],
             icon: '',
             message: '',
             loader: {},
@@ -136,11 +138,11 @@ export default {
 
             setTimeout(
                 function() {
-                    axios({url: 'student-courses' , method: 'GET'})
+                    axios({url: 'teacher-courses' , method: 'GET'})
                         .then((resp) => {
                             if(resp.data.records.length > 0) {
                                 _this.show = true
-                                _this.students_courses = resp.data.records
+                                _this.teacher_courses = resp.data.records
                                 _this.icon = 'success'
                                 _this.message = resp.data.message
                             } else {
