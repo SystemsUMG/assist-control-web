@@ -52,15 +52,21 @@ class StudentCourseController extends ResponseController
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'student_id'                    => ['required', 'integer', 'exists:students,id'],
+            //'student_id'                    => ['required', 'integer', 'exists:students,id'],
             'teacher_course_assigned_id'    => ['required', 'integer', 'exists:teacher_course_assigneds,id'],
         ]);
         try {
-            $student_course = StudentCourseAssigned::create($validate);
-            if ($student_course) {
-                $this->result = true;
-                $this->message = 'Asignación creada correctamente';
+            if(!empty($request->students_assigned)) {
+                $students = explode(',', $request->students_assigned);
+                foreach ($students as $student) {
+                    StudentCourseAssigned::create([
+                        'student_id' => $student,
+                        'teacher_course_assigned_id' => $request->teacher_course_assigned_id
+                    ]);
+                }
             }
+            $this->result = true;
+            $this->message = 'Asignación creada correctamente';
             $this->statusCode = 200;
             return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
         } catch (Exception $exception) {
@@ -114,26 +120,72 @@ class StudentCourseController extends ResponseController
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        $validate = $request->validate([
-            'student_id'                    => ['required', 'integer', 'exists:students,id'],
-            'teacher_course_assigned_id'    => ['required', 'integer', 'exists:teacher_course_assigneds,id'],
-        ]);
         try {
-            $student_course = StudentCourseAssigned::find($id);
-            if ($student_course) {
-                $student_course->update($validate);
-                $this->result = true;
-                $this->message = 'Asignación actualizada';
-            } else {
-                $this->message = 'No existe la asignación';
+            $teacher_course = $request->teacher_course_assigned_id;
+            $students_assigned = $request->students_assigned;
+            $students_courses = StudentCourseAssigned::where('teacher_course_assigned_id', $teacher_course)->get();
+
+            //Vacio (se eliminan todos)
+            if(empty($students_assigned)) {
+                //Eliminar todos los registros
+                foreach($students_courses as $student_course) {
+                    $student_course_assigned = StudentCourseAssigned::where([
+                        'teacher_course_assigned_id' => $teacher_course, 
+                        'student_id' => $student_course->student_id
+                    ])->first();
+                    if ($student_course_assigned) {
+                        $student_course_assigned->delete();
+                    }
+                }
+            } else { //No vacio se deben eliminar los que no vengan y agregar los nuevos
+                $students_assigneds = explode(',', $request->students_assigned);
+                $olds = [];
+                $news = [];
+                //Obtener ids de carreras nuevos
+                foreach($students_assigneds as $student_assigned) {
+                    if (!in_array($student_assigned, $students_courses->pluck('student_id')->toArray())) {
+                        array_push($news, $student_assigned);
+                    }
+                }
+                //Obtener ids a eliminar (los que no vienen en request)
+                foreach($students_courses as $student_course) {
+                    if (!in_array($student_course->student_id, $students_assigneds)) {
+                        array_push($olds, $student_course->student_id);
+                    }
+                }
+                //Borrar registros 
+                if (!empty($olds)) {
+                    foreach ($olds as $old) {
+                        $student_course_assigned = StudentCourseAssigned::where([
+                            'teacher_course_assigned_id' => $teacher_course, 
+                            'student_id' => $old
+                        ])->first();
+                        if ($student_course_assigned) {
+                            $student_course_assigned->delete();
+                        }
+                    }
+                }
+                //Crear registros
+                if (!empty($news)) {
+                    foreach ($news as $new) {
+                        StudentCourseAssigned::create([
+                            'student_id' => $new,
+                            'teacher_course_assigned_id' => $teacher_course
+                        ]);
+                    }
+                }
             }
+
+            $this->records = $students_courses;
+            $this->result = true;
+            $this->message = 'Datos actualizados correctamente';
             $this->statusCode = 200;
-            return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
         } catch (Exception $exception) {
-            return $this->jsonResponse($this->records, $this->result, $this->message = $exception->getMessage(), $this->statusCode);
+            $this->message = $exception->getMessage();
         }
+        return $this->jsonResponse($this->records, $this->result, $this->message, $this->statusCode);
     }
 
     /**
@@ -220,4 +272,5 @@ class StudentCourseController extends ResponseController
     public function division($number_1, $number_2) {
         return $number_2 != 0 ? $number_1 / $number_2 : 0;
     }
+
 }

@@ -22,7 +22,9 @@ class TeacherCourseAssignedController extends ResponseController
                 'career_assigned' => function ($query) {
                     $query->with(['center', 'career']);
                 },
-                'students_assigned',
+                'students_assigned' => function ($query) {
+                    $query->with(['student']);
+                },
                 'teacher',
                 'section',
                 'schedule',
@@ -81,7 +83,9 @@ class TeacherCourseAssignedController extends ResponseController
                 'career_assigned' => function ($query) {
                     $query->with(['center', 'career']);
                 },
-                'students_assigned',
+                'students_assigned' => function ($query) {
+                    $query->with(['student']);
+                },
                 'teacher',
                 'section',
                 'schedule',
